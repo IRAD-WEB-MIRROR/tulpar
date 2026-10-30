@@ -501,7 +501,8 @@ a.pc-name:hover b { text-decoration: underline; }
 /* profile */
 .ac-banner { height: 120px; }
 .ac-top { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 14px; margin-top: -42px; }
-.ac-top .sub-btn { margin-bottom: 4px; }
+.ac-top .sub-btn { margin-bottom: -10px; }
+.ac-meta .ac-msg { margin-left: auto; }
 .ac-info { padding: 8px 14px 12px; background: var(--paper); }
 .ac-info h2 { display: flex; align-items: center; gap: 4px; margin: 0; font: 700 21px/1.2 var(--text); }
 .ac-info h2 .tick { width: 20px; height: 20px; }
