@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tulpar</title>
+  <meta name="description" content="Tulpar: chat, channels, services and Tulpar Pay.">
+  <meta name="theme-color" content="#00728c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+  <script>
+    (function () {
+      var l = null;
+      try { l = JSON.parse(localStorage.getItem("tp_lang") || "null"); } catch (e) {}
+      if (!l) { var n = (navigator.language || "en").toLowerCase(); l = n.indexOf("ru") === 0 ? "ru" : n.indexOf("ky") === 0 ? "ir" : "en"; }
+      if (l !== "en") document.documentElement.setAttribute("data-lang", l);
+      document.documentElement.lang = l === "ir" ? "ky" : l;
+    })();
+  </script>
+<script>window.goatcounter=new Object();goatcounter.path=p=>location.host+p;</script>
+<script data-goatcounter="https://irad.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QTS2XFLJD7"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-QTS2XFLJD7');</script>
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- ===== Discover: the "For you" timeline of every channel ===== -->
+    <section class="tab" id="tab-discover" data-tab="discover">
+      <div class="disc-head">
+        <header class="bar disc-bar"><img class="disc-logo" src="icon.svg" alt="" width="30" height="30"><h1 data-t="tabDiscover">Discover</h1>
+          <button class="bar-btn" type="button" id="discSearch" data-ta="fSearch" aria-label="Search"><svg viewBox="0 0 24 24" class="ico-s"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button></header>
+        <nav class="ftabs" id="ftabs" role="tablist" data-ta="tabDiscover" aria-label="Discover">
+          <button type="button" role="tab" data-f="foryou" aria-selected="true" data-t="fForYou">For you</button>
+          <button type="button" role="tab" data-f="news" aria-selected="false" data-t="fNews">News</button>
+          <button type="button" role="tab" data-f="sport" aria-selected="false" data-t="fSport">Sport</button>
+          <button type="button" role="tab" data-f="business" aria-selected="false" data-t="fBusiness">Business</button>
+        </nav>
+      </div>
+      <div id="discoverBody"></div>
+    </section>
+
+    <!-- one channel's profile (#@handle) -->
+    <section class="tab" id="tab-account" data-tab="account" hidden>
+      <header class="bar">
+        <button class="back" type="button" data-fback data-ta="back" aria-label="Back">‹</button>
+        <div class="room-title"><b id="acName"></b><small id="acCount"></small></div>
+      </header>
+      <div id="acBody"></div>
+    </section>
+
+    <!-- one post and its thread (#post=<id>) -->
+    <section class="tab" id="tab-post" data-tab="post" hidden>
+      <header class="bar">
+        <button class="back" type="button" data-fback data-ta="back" aria-label="Back">‹</button>
+        <div class="room-title"><b data-t="fPost">Post</b></div>
+      </header>
+      <div id="postBody" class="tl"></div>
+    </section>
+
+    <!-- one article -->
+    <section class="tab" id="tab-article" data-tab="article" hidden>
+      <header class="bar">
+        <button class="back" type="button" data-go="discover" data-ta="back" aria-label="Back">‹</button>
+        <div class="room-title"><b id="artKicker">Head Start</b><small id="artWhen"></small></div>
+        <button class="bar-btn" type="button" id="artShare" data-ta="shareArticle" aria-label="Share">⤴</button>
+      </header>
+      <article class="reader" id="artBody"></article>
+    </section>
+
+    <!-- ===== Chats ===== -->
+    <section class="tab" id="tab-chats" data-tab="chats" hidden>
+      <header class="bar"><h1 data-t="tabChats">Chats</h1><span class="bar-note" id="netNote"></span>
+        <button class="bar-btn" type="button" id="newChatBtn" data-ta="newChat" aria-label="New chat">✎</button></header>
+      <div class="banner" id="chatBanner" hidden></div>
+      <div id="dmSection" hidden>
+        <h2 class="list-h" data-t="privateChats">Private chats</h2>
+        <ul class="list" id="dmList"></ul>
+      </div>
+      <h2 class="list-h" data-t="rooms">Rooms</h2>
+      <ul class="list" id="roomList"></ul>
+    </section>
+
+    <!-- conversation view (rooms and private chats) -->
+    <section class="tab room" id="tab-room" data-tab="room" hidden>
+      <header class="bar">
+        <button class="back" type="button" data-go="chats" data-ta="back" aria-label="Back">‹</button>
+        <div class="room-title"><b id="roomName">Room</b><small id="roomDesc"></small></div>
+      </header>
+      <div class="pinned" id="roomPinned" data-t="pinned">Public room: be kind, and never share your address, phone number or passwords.</div>
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <div class="reply-bar" id="replyBar" hidden><div><b id="replyName"></b><span id="replyText"></span></div><button type="button" id="replyCancel" data-ta="cancel" aria-label="Cancel">✕</button></div>
+      <div class="sticker-tray" id="stickerTray" hidden></div>
+      <form class="composer" id="composer" autocomplete="off">
+        <button class="c-btn" type="button" id="plusBtn" data-ta="more" aria-label="More">＋</button>
+        <input id="msgInput" maxlength="500" data-tp="message" placeholder="Message" data-ta="message" aria-label="Message">
+        <button class="c-btn" type="button" id="stickerBtn" data-ta="stickers" aria-label="Stickers">😊</button>
+        <button class="send" type="submit" data-ta="send" aria-label="Send">➤</button>
+      </form>
+      <div class="composer-off" id="composerOff" hidden></div>
+    </section>
+
+    <!-- ===== Channels: the channels you subscribe to, search by @handle or name ===== -->
+    <section class="tab" id="tab-channels" data-tab="channels" hidden>
+      <header class="bar"><h1 data-t="tabChannels">Channels</h1></header>
+      <div class="ch-search"><label><svg viewBox="0 0 24 24" class="ico-s"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+        <input type="search" id="chSearch" autocomplete="off" spellcheck="false" data-tp="fSearchPh" placeholder="Find a channel: @talasfilms or a name" data-ta="fSearch" aria-label="Search"></label></div>
+      <div id="chResults" class="ch-results" hidden></div>
+      <div id="chMain">
+        <div class="subs-row" id="subsRow"></div>
+        <div class="seg ch-seg" id="chSeg" role="group">
+          <button type="button" data-ch="posts" aria-pressed="true" data-t="fPosts">Posts</button>
+          <button type="button" data-ch="list" aria-pressed="false"><span data-t="fYourChannels">Your channels</span> <i id="chSubsN"></i></button>
+          <button type="button" data-ch="saved" aria-pressed="false" data-t="fSaved">Saved</button>
+        </div>
+        <div id="chBody"></div>
+      </div>
+    </section>
+
+    <!-- ===== Services ===== -->
+    <section class="tab" id="tab-services" data-tab="services" hidden>
+      <header class="bar"><h1 data-t="tabServices">Services</h1></header>
+      <div class="svc-top">
+        <button type="button" class="info-card" data-svc="weather" id="wxCard"><small data-t="weather">Weather</small><b id="wxNow">—</b><span id="wxWhere">Talas</span></button>
+        <button type="button" class="info-card" data-svc="rates" id="rateCard"><small data-t="rates">Exchange rates</small><b id="rateNow">8.40 som</b><span data-t="perDollar">per US dollar</span></button>
+      </div>
+      <h2 class="list-h" data-t="payServices">Pay and order</h2>
+      <div class="svc-grid" id="svcPay"></div>
+      <h2 class="list-h" data-t="infoServices">Information</h2>
+      <div class="svc-grid" id="svcInfo"></div>
+    </section>
+
+    <!-- one service, opened from the grid -->
+    <section class="tab" id="tab-svc" data-tab="svc" hidden>
+      <header class="bar">
+        <button class="back" type="button" data-go="services" data-ta="back" aria-label="Back">‹</button>
+        <div class="room-title"><b id="svcName">Service</b><small id="svcDesc"></small></div>
+      </header>
+      <div class="svc-body" id="svcBody"></div>
+    </section>
+
+    <!-- ===== Wallet ===== -->
+    <section class="tab" id="tab-wallet" data-tab="wallet" hidden>
+      <header class="bar"><h1 data-t="tabWallet">Wallet</h1></header>
+      <div class="wallet-card">
+        <small data-t="balance">Tulparcoin balance</small>
+        <b id="walBal">0 TLPR</b>
+        <span id="walVal">≈ $0.00</span>
+      </div>
+      <div class="price-row"><span>TLPR / USD</span><b data-tlpr="px">—</b><span data-tlpr="chg"></span></div>
+      <div class="mini-chart" id="walChart"></div>
+      <div class="actions">
+        <button type="button" class="act" data-locked="lockSend">↑<span data-t="send">Send</span></button>
+        <button type="button" class="act" data-locked="lockRequest">↓<span data-t="request">Request</span></button>
+        <button type="button" class="act" data-locked="lockTopup">＋<span data-t="topUp">Top up</span></button>
+        <button type="button" class="act" id="claimBtn">🎁<span data-t="claim">Claim 100</span></button>
+      </div>
+      <p class="small pad" data-t="walletNote">Tulpar Pay moves to Tulparcoin on 1 January 2027. Tulpar Pay is available to users in Irad only.</p>
+    </section>
+
+    <!-- ===== Profile ===== -->
+    <section class="tab" id="tab-profile" data-tab="profile" hidden>
+      <header class="bar"><h1 data-t="tabProfile">Profile</h1></header>
+      <div class="pad" id="profileBody"></div>
+      <div class="pad" id="adminBody" hidden></div>
+      <div class="pad">
+        <div class="card"><h3 data-t="language">Language</h3>
+          <div class="seg" id="langSeg" role="group" data-ta="language" aria-label="Language">
+            <button type="button" data-lang="ir">Iradcha</button><button type="button" data-lang="ru">Русский</button><button type="button" data-lang="en">English</button>
+          </div>
+        </div>
+      </div>
+      <div class="pad about-app">
+        <h3 data-t="aboutApp">About this app</h3>
+        <p data-t="aboutText">Tulpar is made by Tulpar Technologies in Talas. Chat rooms are public; anything you post can be read by anyone.</p>
+        <p><a href="../index.html" data-t="website">Tulpar website</a> · <a href="../legal.html" data-t="privacy">Privacy and terms</a></p>
+      </div>
+    </section>
+
+    <!-- ===== start-up screen: sign in, choose a name, install ===== -->
+    <div class="gate" id="gate" hidden><div class="gate-in" id="gateBody"></div></div>
+
+    <!-- wide screens: search, channels to subscribe, trending tags -->
+    <aside class="side" id="feedSide" aria-label="Channels"></aside>
+
+    <!-- ===== tab bar ===== -->
+    <nav class="tabs" aria-label="Tulpar">
+      <button type="button" data-go="discover" aria-current="page"><span class="ico">🧭</span><em data-t="tabDiscover">Discover</em></button>
+      <button type="button" data-go="chats"><span class="ico">💬<i class="badge" id="chatBadge" hidden></i></span><em data-t="tabChats">Chats</em></button>
+      <button type="button" data-go="channels"><span class="ico">📣</span><em data-t="tabChannels">Channels</em></button>
+      <button type="button" data-go="services"><span class="ico">🧩</span><em data-t="tabServices">Services</em></button>
+      <button type="button" data-go="wallet"><span class="ico">👛</span><em data-t="tabWallet">Wallet</em></button>
+      <button type="button" data-go="profile"><span class="ico">👤</span><em data-t="tabProfile">Profile</em></button>
+    </nav>
+  </div>
+
+  <!-- message actions sheet -->
+  <div class="sheet" id="sheet" hidden>
+    <div class="sheet-bg" data-close></div>
+    <div class="sheet-card" role="dialog" data-ta="msgOptions" aria-label="Message options">
+      <div class="react-row" id="reactRow"></div>
+      <p class="sheet-who" id="sheetWho"></p>
+      <button type="button" data-act="reply" data-t="reply">Reply</button>
+      <button type="button" data-act="dm" data-t="messagePrivately">Message privately</button>
+      <button type="button" data-act="copy" data-t="copyText">Copy text</button>
+      <button type="button" data-act="report" data-t="report">Report message</button>
+      <button type="button" data-act="block" data-t="hidePerson">Hide messages from this person</button>
+      <button type="button" data-act="delete" data-t="deleteMsg">Delete message</button>
+      <button type="button" data-act="ban" data-t="banPerson">Ban this person (admin)</button>
+      <button type="button" data-close class="cancel" data-t="cancel">Cancel</button>
+    </div>
+  </div>
+
+  <!-- general-purpose dialog (new chat, poll, QR, scanner) -->
+  <div class="sheet" id="dlg" hidden>
+    <div class="sheet-bg" data-dclose></div>
+    <div class="sheet-card dlg-card" role="dialog" aria-modal="true" id="dlgCard"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="../strings.js"></script>
+  <script src="../site.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="i18n.js"></script>
+  <script src="seed.js"></script>
+  <script src="discover.js"></script>
+  <script type="module" src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+    }
+  </script>
+</body>
+</html>
