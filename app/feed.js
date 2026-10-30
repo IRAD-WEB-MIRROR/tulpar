@@ -3,7 +3,8 @@
    Posts come from feed/posts.json, then the day's posts at iradone.com/data/tulpar-feed.json, then the live IradOne,
    Herald and official Tulpar feeds. Likes, reposts, saves and subscriptions are kept per user (Firestore when
    signed in, always mirrored to this device). Subscribe links from the sites (#sub=<handle>) open the channel with a
-   "Subscribe to … on Tulpar?" sheet, shown once the start-up screen is out of the way. */
+   "Subscribe to … on Tulpar?" sheet. Reading needs no account; subscribing, liking, reposting and saving ask the
+   visitor to sign in first (the start-up screen), and a subscription asked for that way is made once they're in. */
 
 const DESK_FEED = "https://iradone.com/data/tulpar-feed.json";
 const IRADONE_INDEX = "https://iradone.com/news/index.json";
@@ -373,21 +374,37 @@ export function createFeed(ctx) {
 
   /* ---------- subscribe links: #sub=<handle> (also #sub=@handle) ---------- */
   // The intent is kept on the device for half an hour so it survives the start-up screen (sign-in, name, install)
-  // and a language switch there; the sheet shows once the screen is gone and the visitor's subscriptions are loaded.
+  // and a language switch there. A link shows the sheet as soon as sign-in state is known; a "yes" given before signing
+  // in (pendingYes) subscribes straight away once the screen is gone and the visitor's subscriptions are loaded.
   const PEND = "tp_pending_sub", PEND_MS = 30 * 60e3;
   const normHandle = raw => { let x = String(raw || ""); try { x = decodeURIComponent(x); } catch (e) {} return x.trim().replace(/^@+/, "").toLowerCase().slice(0, 60); };
-  let pending = (() => { const p = store(PEND); return p && typeof p.h === "string" && Date.now() - (p.at || 0) < PEND_MS ? p.h : null; })();
+  const saved = store(PEND), fresh = saved && typeof saved.h === "string" && Date.now() - (saved.at || 0) < PEND_MS;
+  let pending = fresh ? saved.h : null, pendingYes = fresh && !!saved.yes;
+  function setPending(h, yes) { pending = h; pendingYes = !!yes; store(PEND, h ? { h, yes: pendingYes, at: Date.now() } : null); }
   function subIntent(raw) {
     const h = normHandle(raw);
     if (!h) { notFound(""); return; }
-    pending = h; store(PEND, { h, at: Date.now() });
+    setPending(h, false);
     trySub();
   }
   const canShowSub = () => {
     const FB = ctx.FB;
-    if (ctx.gateOpen()) return false;
-    return !FB.ready || !FB.user || syncedFor === FB.user.uid;
+    if (ctx.gateOpen() || !FB.known) return false;
+    return !FB.user || syncedFor === FB.user.uid;
   };
+  function askToSub(a) {               // false (and the start-up screen) when the visitor has to sign in first
+    setPending(a.handle, true);
+    if (!ctx.needAccount(gateNote())) return false;
+    setPending(null);
+    return true;
+  }
+  function doSub(a) {
+    if (!S.subs.has(a.handle)) toggle("subs", a.handle);
+    toast(t("fSubToast", { n: loc(a.name) }));
+    $$(`[data-sub="${a.handle}"]`).forEach(b => { b.classList.add("on"); b.setAttribute("aria-pressed", true); });
+    if (ctx.current() === "account" && accNow === a.handle) openAccount(a.handle, false);
+    side();
+  }
   function trySub() {
     if (!pending) return;
     if (!ready) { load(); return; }             // load() calls trySub when the channels are in
@@ -397,10 +414,12 @@ export function createFeed(ctx) {
       if (a && !(ctx.current() === "account" && accNow === h)) openAccount(h);
       return;
     }
-    pending = null; store(PEND, null);
+    const yes = pendingYes;
+    setPending(null);
     if (!a) { notFound(h); return; }
-    openAccount(h);
+    if (!(ctx.current() === "account" && accNow === h)) openAccount(h);
     if (S.subs.has(h)) toast(t("fAlreadySub", { n: loc(a.name) }));
+    else if (yes && ctx.FB.user) doSub(a);
     else subSheet(a);
   }
   function subSheet(a) {
@@ -415,10 +434,7 @@ export function createFeed(ctx) {
       <button type="button" class="btn wide line" data-dclose>${esc(t("notNow"))}</button></div>`, { noClose: true });
     $("#subYes").onclick = () => {
       ctx.closeDialog();
-      if (!S.subs.has(a.handle)) toggle("subs", a.handle);
-      toast(t("fSubToast", { n: loc(a.name) }));
-      if (ctx.current() === "account" && accNow === a.handle) openAccount(a.handle, false);
-      side();
+      if (askToSub(a)) doSub(a);
     };
     setTimeout(() => { const b = $("#subYes"); if (b) b.focus(); }, 30);
   }
@@ -496,7 +512,9 @@ export function createFeed(ctx) {
     if (tg) { e.preventDefault(); openTag(tg.dataset.tag); return; }
     const sb = e.target.closest("[data-sub]");
     if (sb) {
-      const h = sb.dataset.sub, a = ACC.get(h), on = toggle("subs", h);
+      const h = sb.dataset.sub, a = ACC.get(h);
+      if (S.subs.has(h) ? !ctx.needAccount(esc(t("fSignInToAct"))) : !askToSub(a)) return;
+      const on = toggle("subs", h);
       toast(t(on ? "fSubToast" : "fUnsubToast", { n: loc(a.name) }));
       $$(`[data-sub="${h}"]`).forEach(b => { b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
       if (ctx.current() === "channels" && chView !== "list" && !$("#chSearch").value.trim()) renderChannels();
@@ -509,6 +527,7 @@ export function createFeed(ctx) {
       const el = pa.closest(".pc"), id = el && el.dataset.pid, p = id && byId.get(id); if (!p) return;
       const act = pa.dataset.pact;
       if (act === "like" || act === "repost" || act === "save") {
+        if (!ctx.needAccount(esc(t("fSignInToAct")))) return;
         const key = act === "like" ? "likes" : act === "repost" ? "reposts" : "saves", on = toggle(key, id);
         if (act === "repost" && on) toast(t("fReposted"));
         if (act === "save") toast(t(on ? "fSavedToast" : "fUnsavedToast"));
@@ -589,7 +608,7 @@ export function createFeed(ctx) {
 
   return {
     load, refresh, onAuth, openAccount, openPost, openTag, back, gateNote,
-    gateClosed: trySub, hasPending: () => !!pending,
+    gateClosed: trySub, hasPending: () => !!pending, cancelPending: () => setPending(null),
     renderDiscover: () => { renderDiscover(); observeMore(); }, renderChannels: () => { renderChannels(); observeMore(); },
     navFor: () => lastTab === "channels" ? "channels" : "discover",
     handleHash(h) {

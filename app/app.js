@@ -98,12 +98,11 @@ document.addEventListener("click", e => {
 });
 
 /* ---------- Firebase (optional) ---------- */
-const FB = { ready: false, user: null, profile: null, admin: false };
+const FB = { ready: false, known: false, user: null, profile: null, admin: false };   // known: sign-in state is settled
 const CFG = window.TULPAR_FIREBASE;
 const V = "10.12.2";
 async function initFirebase() {
-  if (!CFG && !window.__TP_FAKE) { setBanner(t("chatSetup")); return; }
-  showGate("splash");
+  if (!CFG && !window.__TP_FAKE) { FB.known = true; setBanner(t("chatSetup")); if (feed) feed.onAuth(); return; }
   try {
     const [{ initializeApp }, A, F] = window.__TP_FAKE ? window.__TP_FAKE.modules() : await Promise.all([
       import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`),
@@ -113,7 +112,7 @@ async function initFirebase() {
     const app = initializeApp(CFG);
     FB.A = A; FB.F = F; FB.auth = A.getAuth(app); FB.db = F.getFirestore(app); FB.ready = true;
     A.onAuthStateChanged(FB.auth, async user => {
-      FB.user = user; FB.profile = null; FB.admin = false;
+      FB.user = user; FB.profile = null; FB.admin = false; FB.known = true;
       stopDMs();
       if (user) {
         try {
@@ -125,7 +124,7 @@ async function initFirebase() {
         if (FB.profile) startDMs();
       }
       updateComposer(); renderChats();
-      gateFromState();
+      if (gateStep) gateFromState();     // the start-up screen shows only when an action asked for an account
       if (current === "profile") renderProfile();
       if (current === "room" && conv) reopenConv();
       if (feed) feed.onAuth();
@@ -134,8 +133,10 @@ async function initFirebase() {
     setBanner("");
   } catch (e) {
     console.error(e);
+    FB.known = true;
     setBanner(t("chatOffline"));
     hideGate();
+    if (feed) feed.onAuth();
   }
 }
 function setBanner(s) { const b = $("#chatBanner"); b.textContent = s; b.hidden = !s; }
@@ -214,8 +215,8 @@ function openRoom(id) {
   showConv();
 }
 async function openDM(other, name) {
-  if (!FB.ready || !FB.user) { toast(t("signInToDM")); go("profile"); return; }
-  if (!FB.profile) { toast(t("profileToDM")); go("profile"); return; }
+  if (!FB.ready) { toast(t("chatSetupShort")); return; }
+  if (!needAccount(esc(t("signInToDM")))) return;
   const me = FB.user.uid;
   if (other === me) { toast(t("cantDMSelf")); return; }
   const F = FB.F;
@@ -309,8 +310,8 @@ function updateComposer() {
   const off = $("#composerOff"), form = $("#composer");
   let msg = "";
   if (!FB.ready) msg = esc(t("chatSetupShort"));
-  else if (!FB.user) msg = `${esc(t("signInToPost"))} <button class="btn" type="button" data-go="profile">${esc(t("signIn"))}</button>`;
-  else if (!FB.profile) msg = `${esc(t("nameToPost"))} <button class="btn" type="button" data-go="profile">${esc(t("setUpProfile"))}</button>`;
+  else if (!FB.user) msg = `${esc(t("signInToPost"))} <button class="btn" type="button" data-signin>${esc(t("signIn"))}</button>`;
+  else if (!FB.profile) msg = `${esc(t("nameToPost"))} <button class="btn" type="button" data-signin>${esc(t("setUpProfile"))}</button>`;
   else if (FB.profile.banned) msg = esc(t("banned"));
   else if (conv && conv.id === "official" && !FB.admin) msg = esc(t("onlyTulpar"));
   off.innerHTML = msg; off.hidden = !msg; form.hidden = !!msg;
@@ -400,7 +401,7 @@ $("#msgs").addEventListener("click", e => {
 });
 function needProfile() {
   if (!FB.ready) { toast(t("chatSetupShort")); return false; }
-  if (!FB.user || !FB.profile) { toast(t("signInToReact")); return false; }
+  if (!needAccount(esc(t("signInToReact")))) return false;
   if (FB.profile.banned) { toast(t("banned")); return false; }
   return true;
 }
@@ -421,7 +422,7 @@ function openSheet(msg, name) {
   const mine = FB.user && msg.uid === FB.user.uid, isDM = conv.kind === "dm", canAct = FB.ready && FB.user && FB.profile;
   $("#sheetWho").textContent = mine ? t("yourMessage") : name;
   $("#reactRow").innerHTML = Object.entries(REACT).map(([k, e]) => `<button type="button" data-rk="${k}" class="${(msg.r || {})[FB.user && FB.user.uid] === k ? "on" : ""}" aria-label="${esc(t("react_" + k))}">${e}</button>`).join("");
-  $("#reactRow").hidden = !canAct || !!msg.seed;
+  $("#reactRow").hidden = !FB.ready || !!msg.seed;   // reacting asks for an account
   const show = (act, on) => ($(`#sheet [data-act="${act}"]`).hidden = !on);
   show("reply", canAct && !(conv.id === "official" && !FB.admin));
   show("dm", canAct && !isDM && !mine && conv.id !== "official" && !msg.seed);
@@ -447,7 +448,7 @@ $("#sheet").addEventListener("click", async e => {
       const list = store("tp_blocked") || []; if (!list.includes(sheetMsg.uid)) list.push(sheetMsg.uid); store("tp_blocked", list);
       renderMsgs(); toast(t("hidden", { n: sheetMsg.name }));
     } else if (act === "report") {
-      if (!FB.user || !FB.profile) { toast(t("signInToReport")); return; }
+      if (!needAccount(esc(t("signInToReport")))) return;
       await F.addDoc(F.collection(FB.db, "reports"), {
         room: conv.kind === "dm" ? "dm" : conv.id, msgId: sheetMsg.id, msgUid: sheetMsg.uid, msgName: (sheetMsg.name || "").slice(0, 24),
         text: preview(sheetMsg).slice(0, 500), reporter: FB.user.uid, createdAt: F.serverTimestamp()
@@ -551,8 +552,9 @@ let pendingDM = null;
 function readHash() { const m = location.hash.match(/^#u=([A-Za-z0-9]{6,64})$/); if (m) pendingDM = m[1]; }
 function readArticleHash() { const m = location.hash.match(/^#a=([a-z0-9-]{2,80})$/); return m ? m[1] : null; }
 function handleDeepLink() {
-  if (!pendingDM || !FB.ready) return;
-  if (!FB.user || !FB.profile || !$("#gate").hidden) return;
+  if (!pendingDM || !FB.ready || !FB.known) return;
+  if (!$("#gate").hidden) return;
+  if (!needAccount(esc(t("signInToDM")))) return;
   const u = pendingDM; pendingDM = null; openDM(u);
 }
 window.addEventListener("hashchange", () => {
@@ -566,7 +568,15 @@ window.addEventListener("hashchange", () => {
 /* ---------- start-up screen ---------- */
 const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-let gateStep = null;
+// Reading needs no account: Discover, channels, posts, rooms, services and the wallet are open to everyone. The start-up
+// screen (sign in, name, install) appears only when someone tries to do something: post, subscribe, like, react, message.
+let gateStep = null, gateWhy = "";
+function needAccount(why) {            // true when the visitor may act; otherwise opens the start-up screen and says why
+  if (!FB.ready) return !CFG && !window.__TP_FAKE;   // no chat set up: everything stays on the device
+  if (FB.user && FB.profile) return true;
+  gateWhy = why || ""; gateFromState();
+  return false;
+}
 function gateFromState() {
   if (!FB.user) showGate("signin");
   else if (!FB.profile) showGate("profile");
@@ -575,7 +585,7 @@ function gateFromState() {
 }
 function hideGate() {
   const was = !$("#gate").hidden;
-  $("#gate").hidden = true; gateStep = null;
+  $("#gate").hidden = true; gateStep = null; gateWhy = "";
   if (was) { if (current === "chats") renderChats(); handleDeepLink(); }
   if (feed) feed.gateClosed();          // a subscribe link (#sub=) waiting behind the start-up screen
 }
@@ -583,14 +593,19 @@ function gateLangs() {
   return `<div class="g-lang" id="gLang">` + [["ir", "Iradcha"], ["ru", "Русский"], ["en", "English"]].map(([l, n]) =>
     `<button type="button" data-glang="${l}" aria-pressed="${l === LANG}">${n}</button>`).join("") + `</div>`;
 }
+function closeGate() {                // "Not now": back to reading, the waiting action dropped
+  if (feed) feed.cancelPending();
+  hideGate();
+}
+const gateWhyLine = () => gateWhy && !gateWhy.startsWith("<") ? `<p class="g-sub"><span>${gateWhy}</span></p>` : gateWhy;
 function showGate(step) {
   gateStep = step; $("#gate").hidden = false;
   const box = $("#gateBody"), logo = `<img class="g-logo" src="icon.svg" alt="" width="84" height="84">`;
   if (step === "splash") {
     box.innerHTML = `<div class="g-center">${logo}<div class="g-word">tulpar</div><div class="g-spin" aria-label="${esc(t("loading"))}"></div></div>`;
   } else if (step === "signin") {
-    box.innerHTML = gateLangs() + `<div class="g-center">${logo}<div class="g-word">tulpar</div>
-      <h1 class="g-h">${esc(t("gateHead"))}</h1><p class="g-p">${esc(t("gateSub"))}</p>${feed ? feed.gateNote() : ""}</div>
+    box.innerHTML = `<div class="g-top">${gateLangs()}<button type="button" class="g-link" id="gNo">${esc(t("notNow"))}</button></div><div class="g-center">${logo}<div class="g-word">tulpar</div>
+      <h1 class="g-h">${esc(t("gateHead"))}</h1><p class="g-p">${esc(t("gateSub"))}</p>${gateWhyLine()}</div>
       <div class="g-foot"><button class="btn wide g-google" type="button" id="gGoogle"><span class="g-gl" aria-hidden="true">G</span>${esc(t("google"))}</button>
       <button class="btn wide line" type="button" id="gSms">${esc(t("gateSms"))}</button>
       <p class="err" id="gErr" hidden></p>
@@ -602,7 +617,7 @@ function showGate(step) {
     };
     $("#gSms").onclick = () => { const err = $("#gErr"); err.hidden = false; err.textContent = t("gateSmsNo"); };
   } else if (step === "profile") {
-    box.innerHTML = `<div class="g-top"><span class="g-step">1 / 2</span><button type="button" class="g-link" id="gOut">${esc(t("signOut"))}</button></div>
+    box.innerHTML = `<div class="g-top"><span class="g-step">1 / 2</span><span><button type="button" class="g-link" id="gNo">${esc(t("notNow"))}</button> · <button type="button" class="g-link" id="gOut">${esc(t("signOut"))}</button></span></div>
       <div class="g-form"><h1 class="g-h">${esc(t("chooseName"))}</h1><p class="g-p">${esc(t("chooseNameText"))}</p>
       <label class="fld"><span>${esc(t("name"))}</span><input type="text" id="nameIn" maxlength="24" autocomplete="nickname" placeholder="${esc(t("nameEx"))}"></label>
       <label class="check"><input type="checkbox" id="ageIn"> ${esc(t("age13"))}</label>
@@ -621,13 +636,15 @@ function showGate(step) {
       <div class="g-center"><div class="g-phone"><img src="icon.svg" alt="" width="64" height="64"><span>Tulpar</span></div>
       <h1 class="g-h">${esc(t("installTitle"))}</h1><p class="g-p">${esc(t("gateInstallText"))}</p></div>
       <div class="g-foot">${how}<button class="btn wide line" type="button" id="gSkip">${esc(installEvt || isIOS() ? t("notNow") : t("continue"))}</button></div>`;
-    const done = () => { store("tp_install_asked", true); const sub = feed && feed.hasPending(); hideGate(); if (!sub) go("chats"); };
+    const done = () => { store("tp_install_asked", true); hideGate(); };
     $("#gSkip").onclick = done;
     const gi = $("#gInstall");
     if (gi) gi.onclick = async () => { installEvt.prompt(); const c = await installEvt.userChoice; installEvt = null; if (c.outcome === "accepted") toast(t("installed")); done(); };
   }
 }
 document.addEventListener("click", e => {
+  if (e.target.closest("#gNo")) { closeGate(); return; }
+  if (e.target.closest("[data-signin]")) { needAccount(esc(t("signInToPost"))); return; }
   const b = e.target.closest("[data-glang]"); if (!b || b.dataset.glang === LANG) return;
   store("tp_lang", b.dataset.glang); location.reload();
 });
@@ -635,7 +652,7 @@ document.addEventListener("click", e => {
 /* ---------- profile ---------- */
 let installEvt = null;
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installEvt = e; if (gateStep === "install") showGate("install"); else if (current === "profile") renderProfile(); });
-window.addEventListener("appinstalled", () => { store("tp_install_asked", true); if (gateStep === "install") { const sub = feed && feed.hasPending(); hideGate(); if (!sub) go("chats"); } });
+window.addEventListener("appinstalled", () => { store("tp_install_asked", true); if (gateStep === "install") hideGate(); });
 
 function renderProfile() {
   const box = $("#profileBody");
@@ -1100,7 +1117,7 @@ $("#claimBtn").addEventListener("click", () => toast(t("claimLocked")));
 applyStatic();
 readHash();
 feed = createFeed({ $, $$, t, esc, LANG, LOCALE, fmtD, hhmm, toast, store, go, FB, greeting, openArticle, openRoom, dialog, closeDialog,
-  current: () => current, gateOpen: () => !$("#gate").hidden });
+  needAccount, current: () => current, gateOpen: () => !$("#gate").hidden });
 const startHash = location.hash;
 const start = startHash.replace("#", "");
 const startTab = start === "bazar" ? "services" : start;

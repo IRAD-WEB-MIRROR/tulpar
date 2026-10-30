@@ -564,17 +564,17 @@ Object.assign(window.TP_STR.ru, {
 });
 /* subscribe links from the sites (#sub=<handle>) */
 Object.assign(window.TP_STR.en, {
-  fSubAsk: "Subscribe to {n} on Tulpar?", fAlreadySub: "You're already subscribed to {n}.", fSignInToSub: "Sign in to subscribe to {n}.",
+  fSubAsk: "Subscribe to {n} on Tulpar?", fAlreadySub: "You're already subscribed to {n}.", fSignInToSub: "Sign in to subscribe to {n}.", fSignInToAct: "Sign in to subscribe, like, repost and save posts.",
   fNotFound: "Channel not found", fNotFoundText: "There's no channel called {h} on Tulpar. It may have changed its name. Try a search:",
   fNotFoundBare: "This link doesn't name a channel. Try a search:", fSearchBtn: "Search", fDidYouMean: "Similar channels"
 });
 Object.assign(window.TP_STR.ir, {
-  fSubAsk: "Tulparda {n} kanalına jazılasızbı?", fAlreadySub: "Siz {n} kanalına jazılgansız.", fSignInToSub: "{n} kanalına jazıluu üchün kiriñiz.",
+  fSubAsk: "Tulparda {n} kanalına jazılasızbı?", fAlreadySub: "Siz {n} kanalına jazılgansız.", fSignInToSub: "{n} kanalına jazıluu üchün kiriñiz.", fSignInToAct: "Jazıluu, jaktıruu, bölüshüü jana saktoo üchün kiriñiz.",
   fNotFound: "Kanal tabılgan jok", fNotFoundText: "Tulparda {h} degen kanal jok. Balkim, al atın özgörtkön chıgar. Izdep köröñüz:",
   fNotFoundBare: "Bul shiltemede kanal körsötülgön emes. Izdep köröñüz:", fSearchBtn: "Izdöö", fDidYouMean: "Okshosh kanaldar"
 });
 Object.assign(window.TP_STR.ru, {
-  fSubAsk: "Подписаться на канал {n} в Tulpar?", fAlreadySub: "Вы уже подписаны на канал {n}.", fSignInToSub: "Войдите, чтобы подписаться на канал {n}.",
+  fSubAsk: "Подписаться на канал {n} в Tulpar?", fAlreadySub: "Вы уже подписаны на канал {n}.", fSignInToSub: "Войдите, чтобы подписаться на канал {n}.", fSignInToAct: "Войдите, чтобы подписываться, ставить лайки, делать репосты и сохранять посты.",
   fNotFound: "Канал не найден", fNotFoundText: "В Tulpar нет канала {h}. Возможно, он сменил адрес. Попробуйте найти его:",
   fNotFoundBare: "В ссылке не указан канал. Найдите его поиском:", fSearchBtn: "Найти", fDidYouMean: "Похожие каналы"
 });
