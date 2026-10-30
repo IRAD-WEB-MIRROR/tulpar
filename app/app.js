@@ -345,12 +345,49 @@ function roomHistory(room) {
   dueCount = due.length;
   return seedMsgs(room).concat(due);
 }
+/* someone says hi to a person's first message of the (Irad) day in a room, a minute or so later. Worked out the same way
+   on every phone from the message's id, so everyone sees the same greeter and the same words; nothing is stored. */
+const HI = {
+  en: ["Salam {n}! 👋", "Hi {n}, welcome 🙂", "Hey {n}!", "Welcome to the room, {n}", "Oh hi {n} 😊", "hello hello 👋", "Salam aleykum, {n}"],
+  ru: ["Привет, {n}!", "О, {n}, привет 👋", "Добро пожаловать, {n}!", "Здравствуйте 🙂", "Салам, {n}!", "Привет-привет"],
+  ir: ["Salam {n}! Kandaysıñ?", "Kosh keldiñ, {n}! 🙂", "Salam, jakshısıñbı?", "Salam {n} 🙂"],
+  emoji: ["👋", "🙂👋", "🤝", "👋👋"],
+  sticker: ["salam", "kosh"]
+};
+let greetCount = -1;
+function hashStr(x) { let h = 2166136261; for (const c of String(x)) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+function iradDay(ms) { return new Date(ms + 6 * 3600e3).toISOString().slice(0, 10); }
+function greetings(room, live) {
+  const seen = new Set(), out = [], now = Date.now();
+  const crowd = [...new Set((deskRooms[room] || []).concat(seedMsgs(room)).map(m => m.name))];
+  live.forEach(m => {
+    const ms = tsMs(m.createdAt);
+    if (!ms || !m.uid || m.admin) return;
+    const key = m.uid + "|" + iradDay(ms);
+    if (seen.has(key)) return;
+    seen.add(key);
+    const h = hashStr(m.id), who = crowd.filter(n => n !== m.name);
+    if (!who.length) return;
+    const at = ms + (40 + h % 200) * 1000;
+    if (at > now) return;
+    const first = String(m.name || "").split(/[\s_.]/)[0] || "";
+    const kinds = room === "nurzhan" ? ["ru", "ru", "ru", "en", "emoji", "sticker"] : ["en", "en", "en", "ru", "ir", "ir", "emoji", "sticker"];
+    const kind = kinds[(h >>> 4) % kinds.length], pool = HI[kind], pick = pool[(h >>> 8) % pool.length];
+    const g = { id: "greet-" + m.id, seed: true, name: who[(h >>> 12) % who.length], createdAt: new Date(at) };
+    g.uid = "seed:" + g.name;
+    if (kind === "sticker") g.sticker = pick; else g.text = pick.replace("{n}", first);
+    if (h % 3 === 0) g.replyTo = { id: m.id, name: m.name || "", text: preview(m).slice(0, 140) };
+    out.push(g);
+  });
+  return out;
+}
 // while a room is open, new lines appear as their time comes (and the file is fetched again every half hour)
 setInterval(() => {
   if (!conv || conv.kind !== "room" || conv.id === "official" || document.hidden) return;
   loadDeskRooms();
   const now = Date.now();
-  if ((deskRooms[conv.id] || []).filter(m => m.createdAt.getTime() <= now).length !== dueCount) renderMsgs();
+  if ((deskRooms[conv.id] || []).filter(m => m.createdAt.getTime() <= now).length !== dueCount ||
+      greetings(conv.id, lastMsgs).length !== greetCount) renderMsgs();
 }, 20e3);
 let shownMsgs = [];
 function renderMsgs() {
@@ -359,7 +396,8 @@ function renderMsgs() {
   const mine = FB.user && FB.user.uid, isDM = conv.kind === "dm" || conv.kind === "biz";
   let lastDay = "", html = "";
   if (conv.kind === "room" && conv.id !== "official") {
-    shownMsgs = roomHistory(conv.id).concat(lastMsgs).map((m, i) => [tsMs(m.createdAt) || Date.now(), i, m])
+    const hi = greetings(conv.id, lastMsgs); greetCount = hi.length;
+    shownMsgs = roomHistory(conv.id).concat(lastMsgs, hi).map((m, i) => [tsMs(m.createdAt) || Date.now(), i, m])
       .sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(-ROOM_KEEP).map(x => x[2]);
   } else shownMsgs = conv.kind === "biz" ? bizThread(lastMsgs) : lastMsgs;
   shownMsgs.filter(m => !blocked.includes(m.uid)).forEach(m => {
