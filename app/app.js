@@ -362,7 +362,7 @@ function greetings(room, live) {
   const crowd = [...new Set((deskRooms[room] || []).concat(seedMsgs(room)).map(m => m.name))];
   live.forEach(m => {
     const ms = tsMs(m.createdAt);
-    if (!ms || !m.uid || m.admin) return;
+    if (!ms || !m.uid) return;
     const key = m.uid + "|" + iradDay(ms);
     if (seen.has(key)) return;
     seen.add(key);
