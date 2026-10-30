@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-23",
+ "updated": "2026-10-30",
  "accounts": [
   {
    "handle": "tulpar",
@@ -93,6 +93,25 @@
    "followers": 97400,
    "joined": "2020-06",
    "url": "https://talasherald.com/"
+  },
+  {
+   "handle": "vnurzhan",
+   "name": {
+    "en": "Vecherniy Nurzhan",
+    "ru": "Вечерний Нуржан"
+   },
+   "kind": "news",
+   "avatar": "feed/avatars/vnurzhan.png",
+   "banner": "#c8501e",
+   "bio": {
+    "en": "Nurzhan's city weekly, in Russian since 1968. Out Fridays: city news, NurGaz Stadium football, TV listings and the crossword.",
+    "ir": "Nurzhandın shaar gaziti, 1968-jıldan beri orus tilinde. Juma saynı chıgat: shaar jañılıktarı, futbol, teleprogramma jana krossvord.",
+    "ru": "Городская газета Нуржана с 1968 года. Выходит по пятницам: новости города, футбол на «НурГаз Стадионе», телепрограмма и кроссворд."
+   },
+   "verified": true,
+   "followers": 12300,
+   "joined": "2021-02",
+   "url": "https://vnurzhan.com/"
   },
   {
    "handle": "iradtimes",
@@ -191,6 +210,126 @@
    "url": "https://e-irad.org/"
   },
   {
+   "handle": "mejlis",
+   "name": {
+    "en": "Mejlis",
+    "ir": "Mejlis",
+    "ru": "Меджлис"
+   },
+   "kind": "government",
+   "avatar": "feed/avatars/mejlis.png",
+   "banner": "#7a1f1f",
+   "bio": {
+    "en": "The Territorial Legislature of the ISEZ. The order paper before each Tuesday sitting, bills and the record of sittings. Legislative Hall, Talas.",
+    "ir": "IAEZdin aymaktık mıyzam chıgaruu organı. Ar sheyshembidegi otururumdun aldında kün tartibi, mıyzam dolboorloru jana otururumdardın jazuusu. Mejlis Zalı, Talas.",
+    "ru": "Территориальное законодательное собрание ОЭЗИ. Повестка дня перед каждым заседанием по вторникам, законопроекты и стенограммы. Законодательный дворец, Талас."
+   },
+   "verified": true,
+   "followers": 18400,
+   "joined": "2021-09",
+   "url": "https://mejlis.iradgov.org/"
+  },
+  {
+   "handle": "supremecourt",
+   "name": {
+    "en": "Supreme Court of Irad",
+    "ir": "Irad Jogorku Sotu",
+    "ru": "Верховный суд Ирада"
+   },
+   "kind": "government",
+   "avatar": "feed/avatars/court.png",
+   "banner": "#3b2a1a",
+   "bio": {
+    "en": "Hall of Justice, Liberty Boulevard, Talas. Register of pending cases updated weekly, decisions and admission to the bar.",
+    "ir": "Adilet Üyü, Erkindik bulvarı, Talas. Karaluuchu ishterdin reestri ar jumada jañılanat, chechimder jana advokaturaga kabıl aluu.",
+    "ru": "Дворец правосудия, бульвар Свободы, Талас. Реестр рассматриваемых дел обновляется еженедельно, решения и допуск к адвокатуре."
+   },
+   "verified": true,
+   "followers": 11200,
+   "joined": "2022-04",
+   "url": "https://court.iradgov.org/"
+  },
+  {
+   "handle": "elections",
+   "name": {
+    "en": "Territorial Election Commission",
+    "ir": "Aymaktık shayloo komissiyası",
+    "ru": "Территориальная избирательная комиссия"
+   },
+   "kind": "government",
+   "avatar": "feed/avatars/elections.png",
+   "banner": "#1f3c6e",
+   "bio": {
+    "en": "Voter registers, candidates and results in the ISEZ. General election: 2 November 2027. Check your registration on e-Irad.",
+    "ir": "IAEZdegi shayloochulardın tizmeleri, talapkerler jana jıyıntıktar. Jalpı shayloo: 2027-jıldın 2-noyabrı. Tizmede bar-joguñuzdu e-Iradtan tekshiriñiz.",
+    "ru": "Списки избирателей, кандидаты и итоги выборов в ОЭЗИ. Всеобщие выборы: 2 ноября 2027 года. Проверьте себя в списке на e-Irad."
+   },
+   "verified": true,
+   "followers": 8700,
+   "joined": "2023-03",
+   "url": "https://elections.iradgov.org/"
+  },
+  {
+   "handle": "stats",
+   "name": {
+    "en": "Territorial Statistics Office",
+    "ir": "Aymaktık statistika keñsesi",
+    "ru": "Территориальное статистическое управление"
+   },
+   "kind": "government",
+   "avatar": "feed/avatars/stats.png",
+   "banner": "#2c4a5a",
+   "bio": {
+    "en": "Official statistics of the ISEZ (Ministry of Economy): prices, wages, the 2018 census. The 2026 business census runs to 30 November.",
+    "ir": "IAEZdin rasmiy statistikası (Ekonomika ministrligi): baalar, aylıktar, 2018-jılkı el sanagı. 2026-jılkı ishkanalardın sanagı 30-noyabrga cheyin.",
+    "ru": "Официальная статистика ОЭЗИ (Министерство экономики): цены, зарплаты, перепись 2018 года. Перепись предприятий 2026 года — до 30 ноября."
+   },
+   "verified": true,
+   "followers": 6300,
+   "joined": "2022-08",
+   "url": "https://stats.iradgov.org/"
+  },
+  {
+   "handle": "jandarm",
+   "name": {
+    "en": "Republican Gendarmerie",
+    "ir": "Respublikalık jandarmeriya",
+    "ru": "Республиканская жандармерия"
+   },
+   "kind": "government",
+   "avatar": "feed/avatars/jandarm.png",
+   "banner": "#2f3a2a",
+   "bio": {
+    "en": "Ministry of Internal Security. Notices for the line and its checkpoints, State Route 1 and the highways.",
+    "ir": "Ichki koopsuzduk ministrligi. Liniya jana anın ötkööldörü, 1-mamlekettik jol jana chong joldor boyuncha bildirüülör.",
+    "ru": "Министерство внутренней безопасности. Сообщения о линии и её пропускных пунктах, государственной трассе 1 и дорогах."
+   },
+   "verified": true,
+   "followers": 15600,
+   "joined": "2021-06",
+   "url": "https://jandarm.iradgov.org/"
+  },
+  {
+   "handle": "customs",
+   "name": {
+    "en": "Customs Service",
+    "ir": "Bajı kızmatı",
+    "ru": "Таможенная служба"
+   },
+   "kind": "government",
+   "avatar": "feed/avatars/customs.png",
+   "banner": "#24434f",
+   "bio": {
+    "en": "Customs Service of the ISEZ: duties, crossings, transit and the Talas Customs Clearance Terminal. Rules for travellers.",
+    "ir": "IAEZdin Bajı kızmatı: bajılar, ötkööldör, tranzit jana Talas bajı terminalı. Jolovchular üchün erejeler.",
+    "ru": "Таможенная служба ОЭЗИ: пошлины, переходы, транзит и Таласский таможенный терминал. Правила для путешественников."
+   },
+   "verified": true,
+   "followers": 9400,
+   "joined": "2022-01",
+   "url": "https://customs.iradgov.org/"
+  },
+  {
    "handle": "iradenergo",
    "name": {
     "en": "Iradenergo",
@@ -225,7 +364,8 @@
    },
    "verified": true,
    "followers": 12600,
-   "joined": "2022-02"
+   "joined": "2022-02",
+   "url": "https://post.iradgov.org/"
   },
   {
    "handle": "temirjolu",
@@ -243,7 +383,8 @@
    },
    "verified": true,
    "followers": 8900,
-   "joined": "2022-06"
+   "joined": "2022-06",
+   "url": "https://railways.iradgov.org/"
   },
   {
    "handle": "iradleague",
@@ -549,6 +690,46 @@
    "url": "https://maps.attelkom.net/"
   },
   {
+   "handle": "gidromet",
+   "name": {
+    "en": "Irad Gidromet",
+    "ir": "Irad Gidromet",
+    "ru": "Ирадгидромет"
+   },
+   "kind": "service",
+   "avatar": "feed/avatars/gidromet.png",
+   "banner": "#1d4f7a",
+   "bio": {
+    "en": "ISEZ Hydrometeorological Service. Today's weather, the forecast, air quality (US AQI) and the Toktogul reservoir.",
+    "ir": "IAEZdin Gidrometeorologiyalık kızmatı. Bügünkü aba-ırayı, prognoz, abanın sapatı (US AQI) jana Toktogul suu saktagıchı.",
+    "ru": "Гидрометеорологическая служба ОЭЗИ. Погода сегодня, прогноз, качество воздуха (US AQI) и Токтогульское водохранилище."
+   },
+   "verified": true,
+   "followers": 27900,
+   "joined": "2020-11",
+   "url": "https://gidromet.iradgov.org/"
+  },
+  {
+   "handle": "talasair",
+   "name": {
+    "en": "Talas Civil Air Terminal",
+    "ir": "Talas jarandık aba terminalı",
+    "ru": "Таласский гражданский аэровокзал"
+   },
+   "kind": "service",
+   "avatar": "feed/avatars/avia.png",
+   "banner": "#123a6b",
+   "bio": {
+    "en": "Talas Air Base, south side. Departures and arrivals, schedule changes and passenger notices. Civil Aviation Directorate.",
+    "ir": "Talas Aba Bazası, tüshtük tarabı. Uchuular jana konuular, jadıbaldagı özgörüülör jana jürgünchülör üchün bildirüülör.",
+    "ru": "Авиабаза Талас, южная сторона. Вылеты и прилёты, изменения расписания и объявления для пассажиров. Управление гражданской авиации."
+   },
+   "verified": true,
+   "followers": 7100,
+   "joined": "2022-10",
+   "url": "https://avia.iradgov.org/"
+  },
+  {
    "handle": "bereke",
    "name": {
     "en": "Bereke",
@@ -771,6 +952,26 @@
    "joined": "2022-07"
   },
   {
+   "handle": "iradloto",
+   "name": {
+    "en": "IradLoto",
+    "ir": "IradLoto",
+    "ru": "ИрадЛото"
+   },
+   "kind": "business",
+   "avatar": "feed/avatars/iradloto.svg",
+   "banner": "#3b1f6e",
+   "bio": {
+    "en": "The State Lottery Enterprise. Altın Bayge, Joguru! and Tört Tuyak results, jackpots and the ticket checker. Tickets at kiosks and post offices.",
+    "ir": "Mamlekettik lotereya ishkanası. Altın Bayge, Joguru! jana Tört Tuyak jıyıntıktarı, jekpottor jana bilet tekshirüü.",
+    "ru": "Государственное лотерейное предприятие. Итоги «Алтын Байге», «Жогуру!» и «Тёрт Туяк», джекпоты и проверка билетов."
+   },
+   "verified": true,
+   "followers": 33800,
+   "joined": "2020-09",
+   "url": "https://loto.iradgov.org/"
+  },
+  {
    "handle": "tsu",
    "name": {
     "en": "Talas State University",
@@ -843,7 +1044,7 @@
    "verified": false,
    "followers": 4300,
    "joined": "2021-09",
-   "url": "https://iradfilmsociety.neocities.org/"
+   "url": "https://www.attelkom.net/users/Samat4912/"
   },
   {
    "handle": "palaceofart",
@@ -901,6 +1102,26 @@
    "followers": 3900,
    "joined": "2021-06",
    "url": "https://arshakitep.com/"
+  },
+  {
+   "handle": "saintjanyl",
+   "name": {
+    "en": "Church of St. Janyl",
+    "ir": "Iyık Janyl Chirköösü",
+    "ru": "Церковь Святой Джаныл"
+   },
+   "kind": "culture",
+   "avatar": "feed/avatars/saintjanyl.svg",
+   "banner": "#7d1424",
+   "bio": {
+    "en": "Cathedral of the Archeparchy of Iyık Janyl, mother see of the Syro-Iradi Catholic Church. Holy Qurbana times, pilgrimage and the feast calendar.",
+    "ir": "Iyık Janyl arhieparhiyasının sobor chirköösü, Siro-Irad katolik chirköösünün borboru. Iyık Kurbananın ubaktısı, ziyarat jana mayramdar kalendarı.",
+    "ru": "Кафедральный собор Архиепархии Ийык-Джаныл, главный престол Сиро-ирадской католической церкви. Время Святой Курбаны, паломничество и календарь праздников."
+   },
+   "verified": true,
+   "followers": 21500,
+   "joined": "2021-12",
+   "url": "https://saintjanyl.org/"
   }
  ]
 }

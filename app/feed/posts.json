@@ -1,6 +1,401 @@
 {
- "updated": "2026-10-23",
+ "updated": "2026-10-30",
  "posts": [
+  {
+   "id": "cu-1024-mejlis-hello",
+   "handle": "mejlis",
+   "time": "2026-10-24T10:00+06:00",
+   "text": {
+    "en": "The Mejlis is now on Tulpar. The order paper before every Tuesday sitting, bills and the record of sittings. The autumn session runs to 18 December. #Mejlis",
+    "ir": "Mejlis emi Tulparda. Ar sheyshembidegi otırımdın aldında kün tartibi, mıyzam dolboorloru jana otırımdardın jazuusu. Küzgü sessiya 18-dekabrga cheyin. #Mejlis",
+    "ru": "Меджлис теперь в Tulpar. Повестка перед каждым заседанием по вторникам, законопроекты и стенограммы. Осенняя сессия продлится до 18 декабря. #Mejlis"
+   },
+   "link": {
+    "url": "https://mejlis.iradgov.org/",
+    "title": "Mejlis of the Irad Special Economic Zone",
+    "site": "mejlis.iradgov.org"
+   },
+   "stats": {
+    "replies": 51,
+    "reposts": 109,
+    "likes": 640
+   }
+  },
+  {
+   "id": "cu-1024-loto-ab760",
+   "handle": "iradloto",
+   "time": "2026-10-24T20:45+06:00",
+   "text": {
+    "en": "Altın Bayge, draw 760: 14 18 22 26 37 42. No ticket matched all six, so the jackpot rolls to 6,325,000 som. Next Saturday's draw must be won. #AltınBayge",
+    "ir": "Altın Bayge, 760-tirazh: 14 18 22 26 37 42. Altı sandı ech kim taba alıgan jok, jekpot 6 325 000 somgo ötöt. Kelerki ishembidegi tirazhda jekpot sözsüz oynolot. #AltınBayge",
+    "ru": "«Алтын Байге», тираж 760: 14 18 22 26 37 42. Все шесть чисел не угадал никто, джекпот переходит: 6 325 000 сомов. В следующую субботу джекпот обязательно будет разыгран. #AltınBayge"
+   },
+   "link": {
+    "url": "https://loto.iradgov.org/results.html",
+    "title": "Draw results",
+    "site": "loto.iradgov.org"
+   },
+   "stats": {
+    "replies": 94,
+    "reposts": 153,
+    "likes": 1180
+   }
+  },
+  {
+   "id": "cu-1024-tsu-gala",
+   "handle": "tsu",
+   "time": "2026-10-24T18:00+06:00",
+   "text": {
+    "en": "Tonight at 21:00 the winners of the national komuz contest play the Komuz Gala for Aigul Choro kyzy at 90. Good luck to our Faculty of Arts and Music students. #KomuzGala",
+    "ir": "Bügün saat 21:00do uluttuk komuz konkursunun jeñüüchülörü Aigul Choro kızının 90 jashına arnalgan Komuz gala-kontsertinde oynoyt. Körkömdük jana muzıka fakultetibizdin studentterine iygilik! #KomuzGala",
+    "ru": "Сегодня в 21:00 победители национального конкурса комуза выступают на гала-концерте к 90-летию Айгуль Чоро кызы. Удачи студентам нашего факультета искусств и музыки! #KomuzGala"
+   },
+   "stats": {
+    "replies": 26,
+    "reposts": 62,
+    "likes": 520
+   }
+  },
+  {
+   "id": "cu-1025-talasair-winter",
+   "handle": "talasair",
+   "time": "2026-10-25T08:00+06:00",
+   "text": {
+    "en": "Notice No. 40: the winter schedule is in force until 27 March. Tash-Kömür on Tuesdays, Thursdays and Saturdays (daily from 1 December), Almaty Wed and Sat, Tashkent Thu, Dubai Mon, Istanbul Fri.",
+    "ir": "№ 40 bildirüü: kıshkı jadıbal 27-martka cheyin küchündö. Tash-Kömür sheyshembi, beyshembi jana ishembi (1-dekabrdan kün sayın), Almatı sheyshembi jana ishembi, Tashkent beyshembi, Dubay düyshömbü, Stambul juma.",
+    "ru": "Объявление № 40: действует зимнее расписание до 27 марта. Таш-Кумыр по вторникам, четвергам и субботам (с 1 декабря ежедневно), Алматы ср и сб, Ташкент чт, Дубай пн, Стамбул пт."
+   },
+   "link": {
+    "url": "https://avia.iradgov.org/schedule.html",
+    "title": "Flight schedule",
+    "site": "avia.iradgov.org"
+   },
+   "stats": {
+    "replies": 16,
+    "reposts": 62,
+    "likes": 410
+   }
+  },
+  {
+   "id": "cu-1025-stats-census",
+   "handle": "stats",
+   "time": "2026-10-25T10:00+06:00",
+   "text": {
+    "en": "The census of business entities runs until 30 November. Every company, sole trader, farm, workshop and market stall is counted. Our enumerators carry an Office identity card; the answers are used for statistics only.",
+    "ir": "Ishkanalardın sanagı 30-noyabrga cheyin ötöt. Ar bir kompaniya, jeke ishker, charba, ustakana jana bazar orunu sanalat. Kattoochularıbızda Keñsenin kübölügü bar; joopter statistika üchün gana koldonulat.",
+    "ru": "Перепись хозяйствующих субъектов продлится до 30 ноября. Учитываются все компании, ИП, хозяйства, мастерские и места на рынках. У счётчиков есть удостоверение управления; ответы используются только для статистики."
+   },
+   "link": {
+    "url": "https://stats.iradgov.org/business-census.html",
+    "title": "Census of business entities 2026",
+    "site": "stats.iradgov.org"
+   },
+   "stats": {
+    "replies": 16,
+    "reposts": 32,
+    "likes": 230
+   }
+  },
+  {
+   "id": "cu-1025-saintjanyl-moses",
+   "handle": "saintjanyl",
+   "time": "2026-10-25T08:30+06:00",
+   "text": {
+    "en": "Shlama lkhon, peace be with you. The last Sunday of the Season of Moses: Holy Qurbana at 9:30. From 1 November, Kudash Idta, the Dedication of the Church, the last season of the church year.",
+    "ir": "Shlama lkhon, tınchtık silerge. Musa mezgilinin akırkı jekshembisi: Iyık Kurbana saat 9:30da. 1-noyabrdan Kudash Idta, Chirköönü arnoo, chirköö jılının akırkı mezgili.",
+    "ru": "Шлама лхон, мир вам. Последнее воскресенье периода Моисея: Святая Курбана в 9:30. С 1 ноября — Кудаш Идта, Освящение Церкви, последний период церковного года."
+   },
+   "link": {
+    "url": "https://saintjanyl.org/calendar.html",
+    "title": "Calendar",
+    "site": "saintjanyl.org"
+   },
+   "stats": {
+    "replies": 61,
+    "reposts": 139,
+    "likes": 870
+   }
+  },
+  {
+   "id": "cu-1026-jandarm-winter",
+   "handle": "jandarm",
+   "time": "2026-10-26T09:00+06:00",
+   "text": {
+    "en": "From 1 November vehicles crossing the Fergana Gateway must carry chains or winter tyres. Vehicles without them will be turned back at the Otmek post. Highway Patrol Corps",
+    "ir": "1-noyabrdan tartıp Fergana Darbazası arkıluu ötkön unaalarda chınjır je kıshkı döñgölök boluusu kerek. Alar jok unaalar Otmek postunda kayra burulat. Avtojol patrul korpusu",
+    "ru": "С 1 ноября транспорт, следующий через Ферганские ворота, должен иметь цепи или зимние шины. Транспорт без них будет развёрнут на посту Отмек. Корпус дорожного патруля"
+   },
+   "link": {
+    "url": "https://jandarm.iradgov.org/roads.html",
+    "title": "Roads and State Route 1",
+    "site": "jandarm.iradgov.org"
+   },
+   "stats": {
+    "replies": 122,
+    "reposts": 153,
+    "likes": 1530
+   }
+  },
+  {
+   "id": "cu-1026-customs-hello",
+   "handle": "customs",
+   "time": "2026-10-26T11:00+06:00",
+   "text": {
+    "en": "The Customs Service is on Tulpar. Crossing hours, the duty calculator and what travellers may bring are on our site. Information on smuggled fuel, cigarettes, ore or livestock: info@customs.iradgov.org, in confidence.",
+    "ir": "Bajı kızmatı Tulparda. Ötkööldördün ish ubaktısı, bajı eseptegich jana jolovchular emne alıp kele aları saytıbızda. Kontrabanda may, tameki, ruda je mal tuuralu maalımat: info@customs.iradgov.org, jashıruun.",
+    "ru": "Таможенная служба в Tulpar. Часы работы переходов, расчёт пошлины и что можно ввозить путешественникам — на нашем сайте. Сведения о контрабанде топлива, сигарет, руды или скота: info@customs.iradgov.org, конфиденциально."
+   },
+   "link": {
+    "url": "https://customs.iradgov.org/travellers.html",
+    "title": "What travellers may bring",
+    "site": "customs.iradgov.org"
+   },
+   "stats": {
+    "replies": 15,
+    "reposts": 27,
+    "likes": 190
+   }
+  },
+  {
+   "id": "cu-1027-iradgov-kochkor",
+   "handle": "iradgov",
+   "time": "2026-10-27T10:00+06:00",
+   "text": {
+    "en": "Lieutenant Governor Aidar Maksat met residents of Lower Naryn District on a second, smaller refinery at Kochkor-Ata to bring fuel closer to the southern districts. \"This is a plan to be studied, not a decision.\"",
+    "ir": "Vitse-gubernator Aidar Maksat Tömönkü Naryn rayonunun turgundarı menen Kochkor-Atadagı ekinchi, kichi neft ishtetüü zavodu boyuncha jolugushtu. \"Bul chechim emes, izildene turgan plan.\"",
+    "ru": "Вице-губернатор Аидар Максат встретился с жителями Нижненарынского района по поводу второго, небольшого НПЗ в Кочкор-Ате, который приблизит топливо к южным районам. «Это план для изучения, а не решение»."
+   },
+   "link": {
+    "url": "https://iradgov.org/release.html?id=2026-10-27-lieutenant-governor-presents-plan-for-a-refinery",
+    "title": "Lieutenant Governor Presents Plan for a Refinery at Kochkor-Ata to Serve the Southern Districts",
+    "site": "iradgov.org"
+   },
+   "stats": {
+    "replies": 69,
+    "reposts": 147,
+    "likes": 980
+   }
+  },
+  {
+   "id": "cu-1027-iradgov-conference",
+   "handle": "iradgov",
+   "time": "2026-10-27T15:00+06:00",
+   "text": {
+    "en": "A record 700 participants at the Nurzhan Oil and Gas Conference, some 40% more than in 2025. \"Irad's reserves are an asset for Iradis first,\" Minister of Natural Resources Chingiz Asanov told the hall.",
+    "ir": "Nurzhan neft jana gaz konferentsiyasına rekord 700 katıshuuchu keldi, 2025-jılga karaganda 40 paıyzga köp. \"Iraddın baylıgı birinchi kezekte iraddıktardıkı\", dedi Tabigıy resurstar ministri Chingiz Asanov.",
+    "ru": "Рекордные 700 участников на Нуржанской нефтегазовой конференции, примерно на 40% больше, чем в 2025 году. «Запасы Ирада — прежде всего достояние ирадцев», — сказал министр природных ресурсов Чингиз Асанов."
+   },
+   "link": {
+    "url": "https://iradgov.org/release.html?id=2026-10-27-record-700-participants-attend-nurzhan-oil-and-g",
+    "title": "Record 700 Participants Attend Nurzhan Oil and Gas Conference",
+    "site": "iradgov.org"
+   },
+   "stats": {
+    "replies": 49,
+    "reposts": 79,
+    "likes": 610
+   }
+  },
+  {
+   "id": "cu-1027-gidromet-air",
+   "handle": "gidromet",
+   "time": "2026-10-27T16:30+06:00",
+   "text": {
+    "en": "Heating season: fine-particle levels in Nurzhan rise on cold, still evenings. People with heart or lung disease, please follow the air index on our site. S. Musaeva, chief forecaster",
+    "ir": "Jılıtuu mezgili: Nurzhanda suuk, tınch kechterde mayda bölükchölördün deñgeeli kötörülöt. Jürök je öpkö oorusu barlar saytıbızdagı aba indeksin karap turuñuz. S. Musaeva, bash sinoptik",
+    "ru": "Отопительный сезон: уровень мелких частиц в Нуржане растёт в холодные безветренные вечера. Людям с болезнями сердца и лёгких: следите за индексом воздуха на нашем сайте. С. Мусаева, главный синоптик"
+   },
+   "link": {
+    "url": "https://gidromet.iradgov.org/air.html",
+    "title": "Air quality",
+    "site": "gidromet.iradgov.org"
+   },
+   "stats": {
+    "replies": 76,
+    "reposts": 61,
+    "likes": 760
+   }
+  },
+  {
+   "id": "cu-1027-vn-conference",
+   "handle": "vnurzhan",
+   "time": "2026-10-27T19:00+06:00",
+   "text": {
+    "en": "The oil and gas conference at the Palace of Metallurgists drew 700 people, almost 40% more than last year. And the Lieutenant Governor says the Kochkor-Ata refinery is still only being studied.",
+    "ir": "Metallurgdar sarayındagı neft-gaz konferentsiyasına 700 adam keldi, bıltırkıdan 40 paıyzga jakın köp. Vitse-gubernator Kochkor-Atadagı zavod azırıncha izildenip jatat deyt.",
+    "ru": "Нефтегазовая конференция во Дворце металлургов собрала 700 участников, почти на 40% больше, чем в прошлом году. А второй НПЗ в Кочкор-Ате, по словам вице-губернатора, пока только изучают."
+   },
+   "link": {
+    "url": "https://vnurzhan.com/news/neftegazovaya-konferentsiya-itogi.html",
+    "title": "Нефтегазовая конференция собрала 700 участников",
+    "site": "vnurzhan.com"
+   },
+   "stats": {
+    "replies": 20,
+    "reposts": 34,
+    "likes": 340
+   }
+  },
+  {
+   "id": "cu-1028-mejlis-budget",
+   "handle": "mejlis",
+   "time": "2026-10-28T11:00+06:00",
+   "text": {
+    "en": "The Office of the Governor will lay the Budget Bill 2027 before the Mejlis at the sitting of 3 November. The Ways and Means Committee will hold hearings in November. #Budget2027",
+    "ir": "Gubernatordun apparatı 2027-jılkı Byudjet jönündögü mıyzam dolboorun Mejliske 3-noyabrdagı otırımda kiyiret. Kireshe jana chıgım komiteti noyabrda ugushtardı ötköröt. #Budget2027",
+    "ru": "Аппарат губернатора внесёт законопроект о бюджете на 2027 год в Меджлис на заседании 3 ноября. Бюджетный комитет проведёт слушания в ноябре. #Budget2027"
+   },
+   "link": {
+    "url": "https://mejlis.iradgov.org/bills.html",
+    "title": "Bills before the Mejlis",
+    "site": "mejlis.iradgov.org"
+   },
+   "stats": {
+    "replies": 72,
+    "reposts": 101,
+    "likes": 720
+   }
+  },
+  {
+   "id": "cu-1028-talasair-apron",
+   "handle": "talasair",
+   "time": "2026-10-28T14:00+06:00",
+   "text": {
+    "en": "Notice No. 41: from 3 to 7 November the stands in front of the terminal are closed for repairs. Passengers go to the aircraft by bus from exit 3, so please come to boarding as soon as it is called.",
+    "ir": "№ 41 bildirüü: 3–7-noyabr kündörü terminaldın aldındagı turaktar remont üchün jabık. Jolovchular uchakka 3-chıgıshtan avtobus menen jetkirilet, otturuu jarıyalanganda kechikpey keliñiz.",
+    "ru": "Объявление № 41: с 3 по 7 ноября стоянки перед терминалом закрыты на ремонт. Пассажиров доставят к самолёту автобусом от выхода № 3, просим являться на посадку без опозданий."
+   },
+   "link": {
+    "url": "https://avia.iradgov.org/",
+    "title": "Talas Civil Air Terminal",
+    "site": "avia.iradgov.org"
+   },
+   "stats": {
+    "replies": 13,
+    "reposts": 18,
+    "likes": 260
+   }
+  },
+  {
+   "id": "cu-1028-loto-jg1322",
+   "handle": "iradloto",
+   "time": "2026-10-28T20:45+06:00",
+   "text": {
+    "en": "Joguru!, draw 1322: 1 2 11 12 24. No top winner tonight; Sunday's jackpot is 1,430,000 som. #Joguru",
+    "ir": "Joguru!, 1322-tirazh: 1 2 11 12 24. Bügün bash utush jok; jekshembidegi jekpot 1 430 000 som. #Joguru",
+    "ru": "«Жогуру!», тираж 1322: 1 2 11 12 24. Главный выигрыш сегодня не выпал; джекпот в воскресенье — 1 430 000 сомов. #Joguru"
+   },
+   "link": {
+    "url": "https://loto.iradgov.org/results.html",
+    "title": "Draw results",
+    "site": "loto.iradgov.org"
+   },
+   "stats": {
+    "replies": 41,
+    "reposts": 55,
+    "likes": 690
+   }
+  },
+  {
+   "id": "cu-1029-elections-register",
+   "handle": "elections",
+   "time": "2026-10-29T10:00+06:00",
+   "text": {
+    "en": "On 2 November 2027 voters elect the Governor and Lieutenant Governor, the 60 members of the Territorial Legislature and the city councils of Talas, Nurzhan and Iyık Janyl. Check that you are on the register on e-Irad.",
+    "ir": "2027-jıldın 2-noyabrında shayloochular Gubernatordu jana Vitse-gubernatordu, Aymaktık mıyzam chıgaruu organının 60 müchösün jana Talas, Nurzhan, Iyık Janyl shaar keñeshterin shayloyt. Tizmede bar-joguñuzdu e-Iradtan tekshiriñiz.",
+    "ru": "2 ноября 2027 года избиратели выберут губернатора и вице-губернатора, 60 депутатов Территориального законодательного собрания и городские советы Таласа, Нуржана и Ийык-Джаныла. Проверьте себя в списке на e-Irad."
+   },
+   "link": {
+    "url": "https://e-irad.org/vote/",
+    "title": "Am I on the voter register?",
+    "site": "e-irad.org"
+   },
+   "stats": {
+    "replies": 29,
+    "reposts": 41,
+    "likes": 410
+   }
+  },
+  {
+   "id": "cu-1029-tsu-evening",
+   "handle": "tsu",
+   "time": "2026-10-29T12:00+06:00",
+   "text": {
+    "en": "Last days to enrol: evening courses for adults in accounting and taxes, English (A1–B2) and computer literacy, with a state certificate. Classes from 9 November, weekdays 18:30–20:30, Building 3. Enrolment closes 1 November.",
+    "ir": "Jazıluunun akırkı künderi: choñdor üchün kechki kurstar, buhgalteriya jana salıktar, angliys tili (A1–B2) jana kompyuter sabattuulugu, mamlekettik kübölük menen. Sabaktar 9-noyabrdan, ish künderi 18:30–20:30, 3-korpus. Jazıluu 1-noyabrda bütöt.",
+    "ru": "Последние дни записи: вечерние курсы для взрослых — бухучёт и налоги, английский (A1–B2) и компьютерная грамотность, с государственным сертификатом. Занятия с 9 ноября, по будням 18:30–20:30, корпус 3. Запись до 1 ноября."
+   },
+   "link": {
+    "url": "https://talasuniversity.org/news/evening-courses-2026/",
+    "title": "Evening courses for adults: enrolment open until 1 November",
+    "site": "talasuniversity.org"
+   },
+   "stats": {
+    "replies": 28,
+    "reposts": 22,
+    "likes": 280
+   }
+  },
+  {
+   "id": "cu-1029-supremecourt-hello",
+   "handle": "supremecourt",
+   "time": "2026-10-29T14:00+06:00",
+   "text": {
+    "en": "The Supreme Court of Irad is on Tulpar. The register of pending cases is updated weekly on our site, with decisions, the courts of the Zone and admission to the bar. Hall of Justice, Liberty Boulevard, Talas.",
+    "ir": "Irad Jogorku Sotu Tulparda. Karaluuchu ishterdin reestri saytıbızda ar jumada jañılanat, chechimder, Zonanın sottoru jana advokaturaga kabıl aluu da ushul jerde. Adilet Üyü, Erkindik bulvarı, Talas.",
+    "ru": "Верховный суд Ирада в Tulpar. Реестр рассматриваемых дел еженедельно обновляется на нашем сайте, там же решения, суды Зоны и допуск к адвокатуре. Дворец правосудия, бульвар Свободы, Талас."
+   },
+   "link": {
+    "url": "https://court.iradgov.org/register.html",
+    "title": "Register of pending cases",
+    "site": "court.iradgov.org"
+   },
+   "stats": {
+    "replies": 32,
+    "reposts": 39,
+    "likes": 350
+   }
+  },
+  {
+   "id": "cu-1030-vn-derby",
+   "handle": "vnurzhan",
+   "time": "2026-10-30T07:30+06:00",
+   "text": {
+    "en": "Friday's paper is out. On Saturday at NurGaz Stadium Neftchi host Tulpar in the last round, and only a win will do; a draw is enough for Talas. Also: four new housing blocks, 1,520 flats for Nurzhan. #KaraAk",
+    "ir": "Jumalık sanı chıktı. Ishembi NurGaz stadionunda Neftchi akırkı turda Tulpardı kabıl alat, aga jeñish gana kerek; talastıktarga teñ oyun jetishtüü. Dagı: Nurzhan üchün tört jañı turak jay kompleksi, 1 520 kvartira. #KaraAk",
+    "ru": "Вышел пятничный номер. В субботу на «НурГаз Стадионе» «Нефтчи» принимает «Тулпар» в последнем туре — нужна только победа, талассцам хватит ничьей. А ещё: четыре новых жилых комплекса, 1 520 квартир для Нуржана. #KaraAk"
+   },
+   "link": {
+    "url": "https://vnurzhan.com/news/derbi-reshit-vsyo.html",
+    "title": "Дерби решит всё: «Нефтчи» нужна только победа",
+    "site": "vnurzhan.com"
+   },
+   "stats": {
+    "replies": 50,
+    "reposts": 88,
+    "likes": 1260
+   }
+  },
+  {
+   "id": "cu-1030-loto-mbw",
+   "handle": "iradloto",
+   "time": "2026-10-30T10:00+06:00",
+   "text": {
+    "en": "This Saturday's Altın Bayge jackpot of 6,325,000 som must be won. If no ticket matches all six, it rolls down to the five- and four-number winners. Tickets at kiosks and post offices until 20:00 on Saturday. #AltınBayge",
+    "ir": "Bul ishembidegi Altın Bayge jekpotu, 6 325 000 som, sözsüz oynolot. Altı sandı ech kim tappasa, besh jana tört sandı tapkandarga bölünöt. Biletter kiosktordo jana pochtada ishembi saat 20:00gö cheyin. #AltınBayge",
+    "ru": "В эту субботу джекпот «Алтын Байге» — 6 325 000 сомов — обязательно будет разыгран. Если шесть чисел не угадает никто, он разделится между угадавшими пять и четыре. Билеты в киосках и на почте до 20:00 субботы. #AltınBayge"
+   },
+   "link": {
+    "url": "https://loto.iradgov.org/",
+    "title": "IradLoto",
+    "site": "loto.iradgov.org"
+   },
+   "stats": {
+    "replies": 150,
+    "reposts": 364,
+    "likes": 2140
+   }
+  },
   {
    "id": "tp-1023-stickers",
    "handle": "tulpar",
