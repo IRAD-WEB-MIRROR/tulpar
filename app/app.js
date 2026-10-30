@@ -1,6 +1,7 @@
 /* Tulpar web app. Chat runs on Firebase (Auth + Firestore) when app/firebase-config.js is filled in;
    everything else works without it. Text lives in i18n.js; the channels (Discover, Channels, profiles) in feed.js. */
 import { createFeed } from "./feed.js";
+import { icon } from "./svc-icons.js";
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
 const T = window.TULPAR || {};
@@ -810,12 +811,13 @@ function checkLocation(msgEl, onInside) {
 }
 
 /* ---------- services ---------- */
-const SVC_PAY = [["bazar", "🛍️"], ["topup", "📱"], ["utilities", "💡"], ["taxi", "🚕"], ["food", "🍲"], ["installments", "🧾"], ["gov", "🏛️"], ["abroad", "💸"]];
-const SVC_INFO = [["weather", "⛅"], ["rates", "💱"], ["buses", "🚌"], ["church", "⛪"], ["sport", "🏇"]];
-function tiles(list) { return list.map(([id, e]) => `<button type="button" class="tile" data-svc="${id}"><span>${e}</span><b>${esc(t("svc_" + id))}</b></button>`).join(""); }
+const SVC_PAY = ["bazar", "topup", "utilities", "taxi", "food", "installments", "abroad", "gov"];
+const SVC_MOVE = ["buses", "trains", "flights", "maps"];
+const SVC_INFO = ["weather", "rates", "air", "prices", "lottery", "church", "sport"];
+function tiles(list) { return list.map(id => `<button type="button" class="tile" data-svc="${id}">${icon(id)}<b>${esc(t("svc_" + id))}</b></button>`).join(""); }
 let svcDrawn = false;
 function renderServices() {
-  if (!svcDrawn) { $("#svcPay").innerHTML = tiles(SVC_PAY); $("#svcInfo").innerHTML = tiles(SVC_INFO); svcDrawn = true; }
+  if (!svcDrawn) { $("#svcPay").innerHTML = tiles(SVC_PAY); $("#svcMove").innerHTML = tiles(SVC_MOVE); $("#svcInfo").innerHTML = tiles(SVC_INFO); svcDrawn = true; }
   $("#rateNow").textContent = num(SOM) + " som";
   getWeather().then(w => { if (w && w[0] && w[0].ok) { $("#wxNow").textContent = wxIcon(w[0].code) + " " + Math.round(w[0].temp) + "°"; $("#wxWhere").textContent = w[0].name; } }).catch(() => {});
 }
@@ -858,6 +860,27 @@ function loadMarket() {
     }).catch(e => { marketP = null; throw e; });
   return marketP;
 }
+/* government: Tulpar only links to the public portals (Tulpar ID sign-in there is suspended; the state takes no Tulpar Pay) */
+const GOV_LINKS = [["passport", "https://id.e-irad.org/"], ["fines", "https://e-irad.org/fines/"], ["vote", "https://e-irad.org/vote/"],
+  ["tests", "https://e-irad.org/test-results/"], ["appeals", "https://e-irad.org/appeals/"], ["parcel", "https://post.iradgov.org/"],
+  ["court", "https://court.iradgov.org/register.html"], ["forms", "https://e-irad.org/forms.html"], ["gov", "https://e-irad.org/citizens.html"]];
+function linkBtn(href, label) { return `<a class="btn wide line" href="${href}" target="_blank" rel="noopener">${esc(label)} ↗</a>`; }
+const tr = o => (o && (o[LANG] || o.en)) || "";
+/* air, power and water; prices: from the same morning data as the rates */
+function airHTML(j) {
+  const air = (j.air && j.air.places) || [], tk = j.water && j.water.toktogul, pw = j.power || {};
+  return `<div class="card"><h3>${esc(t("airTitle"))}</h3>` + air.map(a => `<div class="aq"><i class="aq-${esc(a.category)}"></i><b>${esc(tr(a.name))}</b><span>${esc(tr(a.label))}</span><strong>${a.aqi}</strong></div>`).join("") +
+    `<p class="small">${esc(t("airNote", { s: tr(j.air && j.air.source) }))}${air[0] && air[0].heating_season ? " " + esc(t("heating")) : ""}</p></div>` +
+    (pw.supply ? `<div class="card"><h3>${esc(t("powerTitle"))}</h3><p>${esc(tr(pw.supply))}</p>${pw.exports ? `<p class="small">${esc(tr(pw.exports))}${pw.source ? " · " + esc(tr(pw.source)) : ""}</p>` : ""}</div>` : "") +
+    (tk ? `<div class="card"><h3>${esc(t("toktogul"))}</h3><div class="fill"><span style="width:${Math.min(100, tk.fill_pct)}%"></span></div>
+      <p class="small">${esc(t("toktogulNote", { s: num(tk.storage_km3), n: tk.total_km3, p: num(tk.fill_pct, 1) }))} ${esc(tr(tk.trend_label))}.</p></div>` : "");
+}
+function pricesHTML(j) {
+  const p = j.prices || {};
+  return ["food", "fuel", "transport", "rent"].filter(g => p[g] && p[g].length).map(g => `<div class="card"><h3>${esc(t("pr_" + g))}</h3><table class="rates"><tbody>` +
+    p[g].map(r => `<tr><td>${esc(tr(r.label))}${r.note ? `<br><span class="small">${esc(tr(r.note))}</span>` : ""}</td><td>${r.prefix ? esc(t("from_")) + " " : ""}${esc(r.text)} som</td></tr>`).join("") +
+    `</tbody></table></div>`).join("") + `<p class="small pad">${esc(t("pricesNote", { s: tr(p.source) }))}</p>`;
+}
 const SVC = {
   bazar: () => `<div class="locked"><div class="lock-e">📍</div><h2>${esc(t("bazarLocked"))}</h2><p>${esc(t("bazarLockedText"))}</p>
       <button class="btn" type="button" id="checkLoc">${esc(t("checkLoc"))}</button><p class="small" id="locMsg"></p></div><div class="bazar" id="bazarOpen" hidden></div>`,
@@ -878,13 +901,13 @@ const SVC = {
     field(t("term"), chips("months", [["3", t("months", { n: 3 })], ["6", t("months", { n: 6 })], ["12", t("months", { n: 12 })]], 1)) +
     `<div class="calc"><small>${esc(t("monthly"))}</small><b id="instOut">—</b><span id="instNote"></span></div>` +
     `<p class="small">${esc(t("instNote"))}</p>` + lockBtn(t("apply")),
-  gov: () => `<div class="shops">` + ["passport", "fines", "address", "certs", "pension", "tax"].map(k =>
-    `<button type="button" class="shop" data-lock-shop><span>${{ passport: "🛂", fines: "🚓", address: "🏠", certs: "📜", pension: "👵", tax: "🧮" }[k]}</span><div><b>${esc(t("gov_" + k))}</b><small>${esc(t("govd_" + k))}</small></div></button>`).join("") + `</div>` + lockBtn(t("continue")),
+  gov: () => `<p class="note-box">${esc(t("govNote"))}</p><div class="shops">` + GOV_LINKS.map(([id, href]) =>
+    `<a class="shop" href="${href}" target="_blank" rel="noopener">${icon(id, 44)}<div><b>${esc(t("gov_" + id))}</b><small>${esc(t("govd_" + id))}</small></div><i class="ext" aria-hidden="true">›</i></a>`).join("") + `</div>`,
   abroad: () => field(t("country"), chips("cty", [["kgs", t("c_kg")], ["kzt", t("c_kz")], ["rub", t("c_ru")], ["uzs", t("c_uz")]])) +
     field(t("youSend"), `<div class="phone-in"><input id="sendAmt" inputmode="decimal" value="500"><span>som</span></div>`) +
     `<div class="calc"><small>${esc(t("theyGet"))}</small><b id="getAmt">—</b><span id="feeNote"></span></div>` +
     field(t("cardNo"), `<input inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000">`) + lockBtn(t("sendMoney")),
-  weather: () => `<div id="wxList" class="wx-list"><p class="empty">${esc(t("loading"))}</p></div><p class="small pad">${esc(t("wxSource"))}</p>`,
+  weather: () => `<div id="wxList" class="wx-list"><p class="empty">${esc(t("loading"))}</p></div><p class="small pad">${esc(t("wxSource"))}</p>` + linkBtn("https://gidromet.iradgov.org/forecast.html", t("wxMore")),
   rates: () => {
     const rows = [["USD", 1, "usd"], ["EUR", 1, "eur"], ["RUB", 100, "rub"], ["KZT", 100, "kzt"], ["KGS", 100, "kgs"], ["UZS", 1000, "uzs"], ["CNY", 1, "cny"]];
     const px = T.livePrice ? T.livePrice() : 0.034;
@@ -898,6 +921,15 @@ const SVC = {
       <p class="small pad">${esc(t("ratesNote"))}</p>`;
   },
   buses: () => `<p class="small pad">${esc(t("busNote"))}</p><div id="busList"></div>`,
+  trains: () => `<div class="card"><h3>${esc(t("trainsToday"))}</h3><table class="rates"><tbody>
+      <tr><td><b>${esc(t("trainNo", { n: 1 }))}</b> ${esc(t("trainUp"))}</td><td>07:40</td></tr><tr><td><b>${esc(t("trainNo", { n: 2 }))}</b> ${esc(t("trainDown"))}</td><td>08:05</td></tr></tbody></table>
+      <p class="small">${esc(t("trainsNote"))}</p></div>` + linkBtn("https://railways.iradgov.org/", t("trainsMore")),
+  flights: () => `<div class="card"><h3>${esc(t("flightRoute"))}</h3><p class="small">${esc(t("flightNote"))}</p></div>
+      <div class="card"><h3>${esc(t("charters"))}</h3><p class="small">${esc(t("chartersNote"))}</p></div>` + linkBtn("https://avia.iradgov.org/", t("flightsMore")),
+  maps: () => `<div class="card"><h3>${esc(t("mapsTitle"))}</h3><p class="small">${esc(t("mapsNote"))}</p></div>` + linkBtn("https://maps.attelkom.net/", t("mapsOpen")),
+  lottery: () => `<div class="card"><h3>IradLoto</h3><p class="small">${esc(t("lotoNote"))}</p></div>` + linkBtn("https://loto.iradgov.org/", t("lotoMore")),
+  air: () => `<div id="airBody"><p class="empty">${esc(t("loading"))}</p></div>` + linkBtn("https://gidromet.iradgov.org/", t("airMore")),
+  prices: () => `<div id="priceBody"><p class="empty">${esc(t("loading"))}</p></div>`,
   church: () => `<div id="churchToday" class="card"></div><div class="card"><h3>${esc(t("comingUp"))}</h3><ul class="cal" id="calList"></ul></div><p class="small pad">${esc(t("churchNote"))}</p>`,
   sport: () => `<div class="card"><h3>⚽ ${esc(t("leagueTitle"))}</h3><div id="league"></div></div><div class="card"><h3>🏇 ${esc(t("horseTitle"))}</h3><ul class="cal" id="horseList"></ul></div>`
 };
@@ -906,7 +938,6 @@ const SVC_AFTER = {
     $("#checkLoc", body).onclick = () => checkLocation($("#locMsg", body), openBazar);
   },
   food: body => $$("[data-lock-shop]", body).forEach(b => (b.onclick = () => $("[data-lock]", body).click())),
-  gov: body => $$("[data-lock-shop]", body).forEach(b => (b.onclick = () => $("[data-lock]", body).click())),
   installments: body => {
     const calc = () => {
       const p = parseFloat(($("#instPrice", body).value || "").replace(",", ".")) || 0, n = +chipVal(body, "months");
@@ -936,6 +967,10 @@ const SVC_AFTER = {
     if (MARKET_OK) return;
     loadMarket().then(() => { if (body.querySelector("table.rates")) body.innerHTML = SVC.rates(); }).catch(() => {});   // still on Rates
   },
+  air: body => loadMarket().then(j => { const box = $("#airBody", body); if (box) box.innerHTML = airHTML(j); })
+    .catch(() => { const box = $("#airBody", body); if (box) box.innerHTML = `<p class="empty">${esc(t("feedFail"))}</p>`; }),
+  prices: body => loadMarket().then(j => { const box = $("#priceBody", body); if (box) box.innerHTML = pricesHTML(j); })
+    .catch(() => { const box = $("#priceBody", body); if (box) box.innerHTML = `<p class="empty">${esc(t("feedFail"))}</p>`; }),
   buses: body => { const draw = () => ($("#busList", body).innerHTML = busHTML()); draw(); },
   church: body => churchFill(body),
   sport: body => sportFill(body)
