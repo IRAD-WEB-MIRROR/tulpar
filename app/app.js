@@ -238,6 +238,7 @@ function showConv() {
   $("#roomPinned").textContent = conv.kind === "dm" ? t("pinnedDM") : t("pinned");
   $("#msgs").dataset.init = ""; clearReply();
   go("room"); updateComposer(); reopenConv();
+  if (conv.kind === "room" && conv.id !== "official") loadDeskRooms();
 }
 function reopenConv() {
   if (!FB.ready) { lastMsgs = []; renderMsgs(); return; }
@@ -252,28 +253,67 @@ function reopenConv() {
   }, err => { console.error(err); $("#msgs").innerHTML = `<p class="empty">${esc(t("loadFail"))}</p>`; });
 }
 
-/* room history from seed.js, shown before live messages */
+/* room history: seed.js (October), then the day's chatter the desk writes each morning (iradone.com/data/tulpar-rooms.json),
+   each line shown once its time has passed. Live messages mix in by time and a room keeps only its newest ROOM_KEEP,
+   so older lines, real ones too, scroll off the top. */
+const DESK_ROOMS = "https://iradone.com/data/tulpar-rooms.json", ROOM_KEEP = 120;
 const seedCache = {};
+let deskRooms = {}, deskAt = 0, deskP = null;
+function lineMsg(m, id) {
+  const o = { id, seed: true, uid: "seed:" + m.u, name: m.u, createdAt: new Date(m.at + ":00+06:00") };
+  if (m.t !== undefined) o.text = m.t; else if (m.s) o.sticker = m.s;
+  else if (m.poll) { o.poll = { q: m.poll.q, opts: m.poll.opts }; o.v = {}; let k = 0; m.poll.votes.forEach((n, j) => { for (let x = 0; x < n; x++) o.v["s" + k++] = j; }); }
+  if (m.r) { o.r = {}; let k = 0; for (const key in m.r) for (let x = 0; x < m.r[key]; x++) o.r["s" + k++] = key; }
+  return o;
+}
 function seedMsgs(room) {
   if (seedCache[room]) return seedCache[room];
   const src = (window.TP_SEED || {})[room] || [];
-  const out = src.map((m, i) => {
-    const o = { id: `seed-${room}-${i}`, seed: true, uid: "seed:" + m.u, name: m.u, createdAt: new Date(m.at + ":00+06:00") };
-    if (m.t !== undefined) o.text = m.t; else if (m.s) o.sticker = m.s;
-    else if (m.poll) { o.poll = { q: m.poll.q, opts: m.poll.opts }; o.v = {}; let k = 0; m.poll.votes.forEach((n, j) => { for (let x = 0; x < n; x++) o.v["s" + k++] = j; }); }
-    if (m.r) { o.r = {}; let k = 0; for (const key in m.r) for (let x = 0; x < m.r[key]; x++) o.r["s" + k++] = key; }
-    return o;
-  });
+  const out = src.map((m, i) => lineMsg(m, `seed-${room}-${i}`));
   src.forEach((m, i) => { if (m.re !== undefined && out[m.re]) out[i].replyTo = { id: out[m.re].id, name: out[m.re].name, text: preview(out[m.re]).slice(0, 140) }; });
   return (seedCache[room] = out);
 }
+function loadDeskRooms() {
+  if (deskP || Date.now() - deskAt < 30 * 60e3) return deskP || Promise.resolve();
+  deskP = getJSON(DESK_ROOMS, 8000).then(j => {
+    const out = {};
+    for (const room in (j && j.rooms) || {}) {
+      const byId = {};
+      out[room] = j.rooms[room].filter(m => m && m.id && m.u && m.at).map(m => {
+        const o = lineMsg(m, "desk-" + m.id);
+        if (m.re && byId[m.re]) o.replyTo = { id: byId[m.re].id, name: byId[m.re].name, text: preview(byId[m.re]).slice(0, 140) };
+        return (byId[m.id] = o);
+      });
+    }
+    deskRooms = out; deskAt = Date.now();
+  }).catch(e => { console.warn(e); deskAt = Date.now() - 25 * 60e3; })      // try again in five minutes
+    .finally(() => { deskP = null; if (conv && conv.kind === "room") renderMsgs(); });
+  return deskP;
+}
+let dueCount = -1;
+function roomHistory(room) {
+  const now = Date.now();
+  const due = (deskRooms[room] || []).filter(m => m.createdAt.getTime() <= now);
+  dueCount = due.length;
+  return seedMsgs(room).concat(due);
+}
+// while a room is open, new lines appear as their time comes (and the file is fetched again every half hour)
+setInterval(() => {
+  if (!conv || conv.kind !== "room" || conv.id === "official" || document.hidden) return;
+  loadDeskRooms();
+  const now = Date.now();
+  if ((deskRooms[conv.id] || []).filter(m => m.createdAt.getTime() <= now).length !== dueCount) renderMsgs();
+}, 20e3);
 let shownMsgs = [];
 function renderMsgs() {
   const box = $("#msgs"), atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
   const blocked = store("tp_blocked") || [];
   const mine = FB.user && FB.user.uid, isDM = conv.kind === "dm";
   let lastDay = "", html = "";
-  shownMsgs = (conv.kind === "room" && conv.id !== "official" ? seedMsgs(conv.id) : []).concat(lastMsgs);
+  if (conv.kind === "room" && conv.id !== "official") {
+    shownMsgs = roomHistory(conv.id).concat(lastMsgs).map((m, i) => [tsMs(m.createdAt) || Date.now(), i, m])
+      .sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(-ROOM_KEEP).map(x => x[2]);
+  } else shownMsgs = lastMsgs;
   shownMsgs.filter(m => !blocked.includes(m.uid)).forEach(m => {
     const d = tsDate(m.createdAt) || new Date(), dl = dayLabel(d);
     if (dl !== lastDay) { html += `<div class="day">${esc(dl)}</div>`; lastDay = dl; }
