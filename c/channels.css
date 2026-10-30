@@ -1,0 +1,47 @@
+/* Channel pages (c/): written by the channel page generator; edit the generator, not this file. */
+.cv-banner { height: 150px; background: linear-gradient(120deg, var(--bn), #054a60); }
+.cv-card { position: relative; padding-top: 0; padding-bottom: 8px; max-width: 760px; }
+.cv-av { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #fff; box-shadow: 0 0 0 1px var(--rule); flex: none; color: #fff; font-weight: 700; }
+.cv-av.xl { width: 112px; height: 112px; margin-top: -56px; border: 4px solid var(--felt); font-size: 34px; }
+.cv-av.sm { width: 44px; height: 44px; font-size: 15px; }
+.cv-acts { position: absolute; right: 24px; top: 14px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.cv-acts .btn { padding: 10px 18px; font-size: 15px; }
+.cv h1 { font: 700 30px/1.2 var(--display); margin: 14px 0 2px; display: flex; align-items: center; gap: 8px; }
+.tick { display: inline-block; width: 22px; height: 22px; flex: none; vertical-align: -4px; }
+.cv-h { color: var(--slate); margin: 0; }
+.cv-alt { margin: 2px 0 0; color: var(--slate); font-size: 15px; }
+.cv-bio { font-size: 18px; margin: 14px 0 6px; }
+.cv-bio-tr { margin: 4px 0; color: var(--slate); font-size: 15px; }
+.cv-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--slate); font-size: 15px; margin-top: 14px; }
+.cv-meta b { color: var(--ink); }
+.cv-posts { max-width: 760px; padding-top: 16px; padding-bottom: 64px; }
+.cp { background: var(--paper); border-radius: 18px; box-shadow: inset 0 0 0 1px var(--rule); padding: 18px 20px; margin-top: 14px; }
+.cp > header { display: flex; align-items: center; gap: 12px; }
+.cp-who { flex: 1; min-width: 0; line-height: 1.3; }
+.cp-who .tick { width: 17px; height: 17px; margin-left: 4px; vertical-align: -3px; }
+.cp-who > span { display: block; color: var(--slate); font-size: 15px; }
+.cp-time { color: var(--slate); font-size: 14px; text-decoration: none; white-space: nowrap; }
+.cp-text { margin: 12px 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+.cp-more { margin-top: 8px; color: var(--slate); font-size: 15px; }
+.cp-more summary { cursor: pointer; font-size: 14px; }
+.cp-tr { margin: 8px 0 0; }
+.cp-tr span { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+.cp-img { display: block; width: 100%; max-height: 420px; object-fit: cover; border-radius: 14px; margin-top: 12px; }
+.cp-link, .cp-quote { display: block; margin: 12px 0 0; padding: 12px 14px; border-radius: 14px; box-shadow: inset 0 0 0 1px var(--rule); text-decoration: none; color: var(--ink); }
+.cp-link small { display: block; color: var(--slate); }
+.cp-link span, .cp-quote span { display: block; color: var(--slate); font-size: 15px; }
+.cp-quote a { text-decoration: none; color: var(--ink); font-size: 15px; }
+.cp-stats { display: flex; gap: 18px; margin-top: 12px; color: var(--slate); font-size: 14px; }
+.cv-none, .cv-back { color: var(--slate); margin-top: 24px; }
+.ci-group { padding-bottom: 24px; }
+.ci-group h2 { font: 600 22px/1.3 var(--display); margin: 28px 0 12px; }
+.ci-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.ci-list a { display: flex; gap: 12px; padding: 14px 16px; background: var(--paper); border-radius: 16px; box-shadow: inset 0 0 0 1px var(--rule); text-decoration: none; color: var(--ink); height: 100%; }
+.ci-list small { display: block; color: var(--slate); }
+.ci-list em { display: block; font-style: normal; color: var(--slate); font-size: 14px; margin-top: 4px; }
+.ci-list .tick { width: 16px; height: 16px; margin-left: 4px; vertical-align: -3px; }
+@media (max-width: 640px) {
+  .cv-acts { position: static; justify-content: flex-start; margin-top: 12px; }
+  .cv h1 { font-size: 24px; }
+  .ci-list { grid-template-columns: 1fr; }
+}

@@ -3,7 +3,7 @@
 window.TULPAR_STR = {
   en: {
     home: "Tulpar home", menu: "Menu", navApp: "The app", navCoin: "Tulparcoin", navNews: "Newsroom", navAbout: "About", getApp: "Get the app",
-    footTag: "Chat, channels, Bazar and Tulpar Pay. Made in Talas for Iradis everywhere.",
+    fChannels: "Channels", footTag: "Chat, channels, Bazar and Tulpar Pay. Made in Talas for Iradis everywhere.",
     fProduct: "Product", fFeatures: "Features", fDownload: "Download", fCoin: "Tulparcoin", fPoints: "Tulpar points",
     fCompany: "Company", fAbout: "About us", fLetter: "Why we built Tulpar Pay", fCareers: "Careers", fNews: "Newsroom", fPress: "Press contacts",
     fHelp: "Help", fHelpCentre: "Help centre", fButtons: "Tulpar on your website", fFaq: "Tulparcoin FAQ", fPrivacy: "Privacy policy", fTerms: "Terms of service",
@@ -27,7 +27,7 @@ window.TULPAR_STR = {
 
   ir: {
     home: "Tulpar bashkı bet", menu: "Menyu", navApp: "Tirkeme", navCoin: "Tulparcoin", navNews: "Jañılıktar", navAbout: "Biz jönündö", getApp: "Tirkemeni jüktöö",
-    footTag: "Chat, kanaldar, Bazar jana Tulpar Pay. Talasta jasalgan, bardık iradiktar üchün.",
+    fChannels: "Kanaldar", footTag: "Chat, kanaldar, Bazar jana Tulpar Pay. Talasta jasalgan, bardık iradiktar üchün.",
     fProduct: "Önüm", fFeatures: "Mümkünchülüktör", fDownload: "Jüktöö", fCoin: "Tulparcoin", fPoints: "Tulpar punktarı",
     fCompany: "Kompaniya", fAbout: "Biz jönündö", fLetter: "Tulpar Pay emne üchün", fCareers: "Jumush", fNews: "Jañılıktar", fPress: "Basma söz üchün",
     fHelp: "Jardam", fHelpCentre: "Jardam borboru", fButtons: "Saytıñızda Tulpar", fFaq: "Tulparcoin suroolor", fPrivacy: "Jashırınduuluk sayasatı", fTerms: "Koldonuu shartları",
@@ -51,7 +51,7 @@ window.TULPAR_STR = {
 
   ru: {
     home: "Tulpar — главная", menu: "Меню", navApp: "Приложение", navCoin: "Tulparcoin", navNews: "Новости", navAbout: "О нас", getApp: "Скачать",
-    footTag: "Чаты, каналы, Bazar и Tulpar Pay. Сделано в Таласе для ирадцев по всему миру.",
+    fChannels: "Каналы", footTag: "Чаты, каналы, Bazar и Tulpar Pay. Сделано в Таласе для ирадцев по всему миру.",
     fProduct: "Продукт", fFeatures: "Возможности", fDownload: "Скачать", fCoin: "Tulparcoin", fPoints: "Пункты Tulpar",
     fCompany: "Компания", fAbout: "О нас", fLetter: "Зачем мы создали Tulpar Pay", fCareers: "Вакансии", fNews: "Новости", fPress: "Для прессы",
     fHelp: "Помощь", fHelpCentre: "Справочный центр", fButtons: "Tulpar на вашем сайте", fFaq: "Вопросы о Tulparcoin", fPrivacy: "Политика конфиденциальности", fTerms: "Условия использования",
