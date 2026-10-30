@@ -293,7 +293,7 @@
    "kind": "government",
    "avatar": "feed/avatars/stats.png",
    "banner": "#2c4a5a",
-   "cover": "https://irad.wiki/images/Talas_street_market_crowd.jpg",
+   "cover": "feed/covers/stats.jpg",
    "bio": {
     "en": "Official statistics of the ISEZ (Ministry of Economy): prices, wages, the 2018 census. The 2026 business census runs to 30 November.",
     "ir": "IAEZdin rasmiy statistikası (Ekonomika ministrligi): baalar, aylıktar, 2018-jılkı el sanagı. 2026-jılkı ishkanalardın sanagı 30-noyabrga cheyin.",
@@ -814,7 +814,7 @@
    "kind": "business",
    "avatar": "feed/avatars/shipa.svg",
    "banner": "#0f8a5f",
-   "cover": "https://irad.wiki/images/Coppersmiths_Row_Talas.jpg",
+   "cover": "feed/covers/shipa.jpg",
    "bio": {
     "en": "Pharmacies in Talas (34), Nurzhan (23) and Iyık Janyl (14). Shıpa means cure.",
     "ir": "Talasta (34), Nurzhanda (23) jana Iyık Janylda (14) dariykanalar.",
@@ -893,7 +893,7 @@
    "kind": "business",
    "avatar": "feed/avatars/iradstrakh.svg",
    "banner": "#5a6170",
-   "cover": "https://irad.wiki/images/Steppe_winter_quarters.jpg",
+   "cover": "feed/covers/iradstrakh.jpg",
    "bio": {
     "en": "State Insurance Company of Irad. Motor third-party cover, property, crops and livestock. About 60 offices.",
     "ir": "Irad Mamlekettik Kamsızdandıruu Kompaniyası. 60go juuk bölüm.",
@@ -1150,7 +1150,7 @@
    },
    "kind": "culture",
    "banner": "#5b6b3a",
-   "cover": "https://irad.wiki/images/Newspaper_kiosk.jpg",
+   "cover": "feed/covers/arshakitep.jpg",
    "bio": {
     "en": "Independent press, Köhne Diz, since 2009. Poetry, stories and songs in Iradi, Russian and English. Ottuk Library in English.",
     "ir": "2009-jıldan beri köz karandısız basma, Köhne Diz. Iradi, orus jana angliys tilderinde.",
