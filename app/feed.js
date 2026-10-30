@@ -348,13 +348,16 @@ export function createFeed(ctx) {
     const joined = a.joined ? monthYear(a.joined) : "";
     const site = a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">🔗 ${esc(a.url.replace(/^https?:\/\//, "").replace(/\/$/, ""))}</a>` : "";
     const official = h === "tulpar" ? `<button class="btn line" type="button" id="openOfficial">${esc(t(ctx.FB.admin ? "postAsTulpar" : "openChannel"))}</button>` : "";
+    const canMsg = h !== "tulpar" && (a.kind === "business" || a.kind === "service");
+    const msgBtn = canMsg ? `<button class="btn line" type="button" id="msgBiz">✉️ ${esc(t("message"))}</button>` : "";
     $("#acBody").innerHTML = `<div class="ac-banner" style="background:linear-gradient(135deg, ${esc(a.banner || "#00728c")}, #054a60)"></div>
       <div class="ac-top">${avatar(a, "xl")}${subBtn(a, true)}</div>
       <div class="ac-info"><h2>${nameLine(a)}</h2><p class="pc-h">@${a.handle}</p><p class="ac-bio">${richText(loc(a.bio))}</p>
       <p class="ac-meta">${site}${joined ? `<span>📅 ${esc(t("fJoined", { d: joined }))}</span>` : ""}</p>
-      <p class="ac-meta"><b>${esc(compact(subCount(a)))}</b> ${esc(t("fFollowersW"))}${a.verified ? ` · <span class="ac-ver">${TICK} ${esc(t("fVerified"))}</span>` : ""}</p>${official}</div>
+      <p class="ac-meta"><b>${esc(compact(subCount(a)))}</b> ${esc(t("fFollowersW"))}${a.verified ? ` · <span class="ac-ver">${TICK} ${esc(t("fVerified"))}</span>` : ""}</p>${official}${msgBtn}</div>
       <h2 class="list-h">${esc(t("fPosts"))}</h2><div id="acList" class="tl"></div><div class="tl-more"></div>`;
     const po = $("#openOfficial"); if (po) po.onclick = () => ctx.openRoom("official");
+    const pm = $("#msgBiz"); if (pm) pm.onclick = () => ctx.openBiz(h, loc(a.name));
     list = ps; shown = 0; more("#acList"); observeMore();
     if (!ps.length) $("#acList").innerHTML = `<p class="empty">${esc(t("fNoPosts"))}</p>`;
     $("#tab-account").scrollTop = 0;
