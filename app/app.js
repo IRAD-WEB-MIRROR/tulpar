@@ -143,7 +143,7 @@ async function initFirebase() {
 function setBanner(s) { const b = $("#chatBanner"); b.textContent = s; b.hidden = !s; }
 
 /* ---------- chats list ---------- */
-let dmDocs = [], dmUnsub = null, dmFirst = true;
+let dmDocs = [], dmUnsub = null, dmFirst = true, bizDocs = [], bizUnsub = null;
 function renderChats() {
   $("#roomList").innerHTML = ROOMS.map(r =>
     `<li><button type="button" data-room="${r.id}"><span class="ava">${r.e}</span><span class="txt"><b>${esc(roomName(r.id))}</b><small>${esc(roomDesc(r.id))}</small></span></button></li>`
@@ -152,9 +152,15 @@ function renderChats() {
   $("#newChatBtn").hidden = !(FB.ready && FB.profile);
   if (!me || !FB.profile) { sec.hidden = true; updateBadge(); return; }
   const blocked = store("tp_blocked") || [], seen = store("tp_seen") || {};
-  const list = dmDocs.filter(d => !blocked.includes(otherOf(d))).sort((a, b) => tsMs(b.updatedAt) - tsMs(a.updatedAt));
+  const list = dmDocs.filter(d => !blocked.includes(otherOf(d))).concat(bizDocs).sort((a, b) => tsMs(b.updatedAt) - tsMs(a.updatedAt));
   sec.hidden = false;
   $("#dmList").innerHTML = list.length ? list.map(d => {
+    if (d.handle) {
+      const nm = d.bizName || d.handle, last = d.last || {}, unread = isUnread(d, seen), when = tsDate(last.at);
+      return `<li><button type="button" data-biz="${esc(d.handle)}" data-dmname="${esc(nm)}" class="${unread ? "unread" : ""}"><span class="ava ini">${esc(initials(nm))}</span>
+      <span class="txt"><b>${esc(nm)}</b><small>${last.uid === me ? esc(t("you")) + ": " : ""}${esc(clean(last.text || ""))}</small></span>
+      <span class="meta">${when ? esc(sameDay(when) ? hhmm(when) : fmtD(when, { day: "numeric", month: "short" })) : ""}${unread ? '<i class="dot"></i>' : ""}</span></button></li>`;
+    }
     const o = otherOf(d), nm = (d.names && d.names[o]) || "…", last = d.last || {};
     const unread = isUnread(d, seen), when = tsDate(last.at);
     return `<li><button type="button" data-dm="${esc(o)}" data-dmname="${esc(nm)}" class="${unread ? "unread" : ""}"><span class="ava ini">${esc(initials(nm))}</span>
@@ -171,7 +177,7 @@ function updateBadge() {
   const b = $("#chatBadge");
   if (!FB.user || !FB.profile) { b.hidden = true; return; }
   const seen = store("tp_seen") || {}, blocked = store("tp_blocked") || [];
-  const n = dmDocs.filter(d => !blocked.includes(otherOf(d)) && isUnread(d, seen)).length;
+  const n = dmDocs.filter(d => !blocked.includes(otherOf(d)) && isUnread(d, seen)).length + bizDocs.filter(d => isUnread(d, seen)).length;
   b.hidden = !n; b.textContent = n > 9 ? "9+" : n;
 }
 function markSeen(id) { const s = store("tp_seen") || {}; s[id] = Date.now() + 1000; store("tp_seen", s); }
@@ -189,8 +195,13 @@ function startDMs() {
     if (conv && conv.kind === "dm") markSeen(conv.id);
     if (current === "chats") renderChats(); else updateBadge();
   }, err => console.warn(err));
+  bizUnsub = F.onSnapshot(F.query(F.collection(FB.db, "biz"), F.where("uid", "==", FB.user.uid)), snap => {
+    bizDocs = snap.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: "estimate" }) }));
+    if (conv && conv.kind === "biz") markSeen(conv.id);
+    if (current === "chats") renderChats(); else updateBadge();
+  }, err => console.warn("company chats:", err.code || err.message));
 }
-function stopDMs() { if (dmUnsub) { dmUnsub(); dmUnsub = null; } dmDocs = []; }
+function stopDMs() { if (dmUnsub) { dmUnsub(); dmUnsub = null; } if (bizUnsub) { bizUnsub(); bizUnsub = null; } dmDocs = []; bizDocs = []; }
 function notifyDM(d) {
   const blocked = store("tp_blocked") || [], o = otherOf(d);
   if (blocked.includes(o)) return;
@@ -204,12 +215,15 @@ function notifyDM(d) {
 }
 
 $("#roomList").addEventListener("click", e => { const b = e.target.closest("[data-room]"); if (b) openRoom(b.dataset.room); });
-$("#dmList").addEventListener("click", e => { const b = e.target.closest("[data-dm]"); if (b) openDM(b.dataset.dm, b.dataset.dmname); });
+$("#dmList").addEventListener("click", e => {
+  const z = e.target.closest("[data-biz]"); if (z) { openBiz(z.dataset.biz, z.dataset.dmname); return; }
+  const b = e.target.closest("[data-dm]"); if (b) openDM(b.dataset.dm, b.dataset.dmname);
+});
 
 /* ---------- conversations ---------- */
 let conv = null, unsub = null, lastMsgs = [], replyTo = null;
 function stopConv() { if (unsub) { unsub(); unsub = null; } }
-function msgCol() { const F = FB.F; return conv.kind === "dm" ? F.collection(FB.db, "dms", conv.id, "messages") : F.collection(FB.db, "rooms", conv.id, "messages"); }
+function msgCol() { const F = FB.F; return F.collection(FB.db, conv.kind === "dm" ? "dms" : conv.kind === "biz" ? "biz" : "rooms", conv.id, "messages"); }
 function openRoom(id) {
   const official = id === "official";
   conv = { kind: "room", id, name: official ? "Tulpar" : roomName(id), desc: official ? t("officialDesc") : roomDesc(id) };
@@ -233,9 +247,42 @@ async function openDM(other, name) {
     markSeen(id); showConv();
   } catch (e) { console.warn(e); toast(t("tryAgain")); }
 }
+/* company chats: a company's channel has a Message button. The company's standard hello opens the chat (shown by the
+   app, never stored); what the person writes goes to biz/<uid>_<handle>/messages, where the company's team answers. */
+async function openBiz(handle, name) {
+  const me = FB.user && FB.user.uid;
+  conv = { kind: "biz", id: me ? me + "_" + handle : "", handle, name: name || handle, exists: false, since: null };
+  if (FB.ready && me) {
+    try {
+      const d = await FB.F.getDoc(FB.F.doc(FB.db, "biz", conv.id));
+      if (d.exists()) { conv.exists = true; conv.since = tsDate(d.data().createdAt); }
+    } catch (e) { console.warn("company chat:", e.code || e.message); }
+    markSeen(conv.id);
+  }
+  showConv();
+}
+function bizHello() {
+  const at = conv.since || conv.opened || (conv.opened = new Date());
+  return { id: "hello", seed: true, uid: "biz:" + conv.handle, name: conv.name, text: t("bizHello", { n: conv.name }), createdAt: at };
+}
+// after the person's third message the company's chat answers with an "out of service" notice, a minute later
+const BIZ_FREE = 3;
+function bizThread(msgs) {
+  const out = [bizHello()], me = FB.user && FB.user.uid;
+  let n = 0;
+  msgs.forEach(m => {
+    out.push(m);
+    if (m.uid === me && ++n === BIZ_FREE) {
+      const at = new Date((tsMs(m.createdAt) || Date.now()) + 60e3);
+      out.push({ id: "closed", seed: true, uid: "biz:" + conv.handle, name: conv.name, text: t("bizClosed", { n: conv.name }), createdAt: at });
+    }
+  });
+  return out;
+}
 function showConv() {
-  $("#roomName").textContent = conv.name; $("#roomDesc").textContent = conv.kind === "dm" ? t("privateChat") : conv.desc;
-  $("#roomPinned").textContent = conv.kind === "dm" ? t("pinnedDM") : t("pinned");
+  const priv = conv.kind === "dm" || conv.kind === "biz";
+  $("#roomName").textContent = conv.name; $("#roomDesc").textContent = conv.kind === "dm" ? t("privateChat") : conv.kind === "biz" ? t("bizChat") : conv.desc;
+  $("#roomPinned").textContent = conv.kind === "biz" ? t("pinnedBiz") : priv ? t("pinnedDM") : t("pinned");
   $("#msgs").dataset.init = ""; clearReply();
   go("room"); updateComposer(); reopenConv();
   if (conv.kind === "room" && conv.id !== "official") loadDeskRooms();
@@ -243,12 +290,13 @@ function showConv() {
 function reopenConv() {
   if (!FB.ready) { lastMsgs = []; renderMsgs(); return; }
   if (conv.kind === "dm" && (!FB.user || !FB.user.uid || !conv.id.split("_").includes(FB.user.uid))) { go("chats"); return; }
+  if (conv.kind === "biz" && (!FB.user || !conv.id)) { stopConv(); lastMsgs = []; renderMsgs(); return; }
   $("#msgs").innerHTML = `<p class="empty">${esc(t("loading"))}</p>`;
   const F = FB.F;
   stopConv();
   unsub = F.onSnapshot(F.query(msgCol(), F.orderBy("createdAt"), F.limitToLast(100)), snap => {
     lastMsgs = snap.docs.map(d => ({ id: d.id, ...d.data({ serverTimestamps: "estimate" }) }));
-    if (conv.kind === "dm") { conv.exists = conv.exists || lastMsgs.length > 0; markSeen(conv.id); updateBadge(); }
+    if (conv.kind === "dm" || conv.kind === "biz") { conv.exists = conv.exists || lastMsgs.length > 0; markSeen(conv.id); updateBadge(); }
     renderMsgs();
   }, err => { console.error(err); $("#msgs").innerHTML = `<p class="empty">${esc(t("loadFail"))}</p>`; });
 }
@@ -308,12 +356,12 @@ let shownMsgs = [];
 function renderMsgs() {
   const box = $("#msgs"), atBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 80;
   const blocked = store("tp_blocked") || [];
-  const mine = FB.user && FB.user.uid, isDM = conv.kind === "dm";
+  const mine = FB.user && FB.user.uid, isDM = conv.kind === "dm" || conv.kind === "biz";
   let lastDay = "", html = "";
   if (conv.kind === "room" && conv.id !== "official") {
     shownMsgs = roomHistory(conv.id).concat(lastMsgs).map((m, i) => [tsMs(m.createdAt) || Date.now(), i, m])
       .sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(-ROOM_KEEP).map(x => x[2]);
-  } else shownMsgs = lastMsgs;
+  } else shownMsgs = conv.kind === "biz" ? bizThread(lastMsgs) : lastMsgs;
   shownMsgs.filter(m => !blocked.includes(m.uid)).forEach(m => {
     const d = tsDate(m.createdAt) || new Date(), dl = dayLabel(d);
     if (dl !== lastDay) { html += `<div class="day">${esc(dl)}</div>`; lastDay = dl; }
@@ -378,9 +426,16 @@ async function sendContent(content) {
       const dref = F.doc(FB.db, "dms", conv.id);
       if (conv.exists) batch.update(dref, { last, updatedAt: F.serverTimestamp() });
       else batch.set(dref, { members: [uid, conv.other].sort(), names: { [uid]: FB.profile.name, [conv.other]: conv.name }, last, updatedAt: F.serverTimestamp() });
+    } else if (conv.kind === "biz") {
+      const last = { uid, text: preview(content).slice(0, 80), at: F.serverTimestamp() };
+      const bref = F.doc(FB.db, "biz", conv.id);
+      if (conv.exists) batch.update(bref, { last, waiting: true, updatedAt: F.serverTimestamp() });
+      else batch.set(bref, { uid, handle: conv.handle, bizName: conv.name, userName: FB.profile.name, lang: LANG, last, waiting: true,
+        createdAt: F.serverTimestamp(), updatedAt: F.serverTimestamp() });
+      if (!conv.since) conv.since = conv.opened;
     }
     await batch.commit();
-    if (conv.kind === "dm") conv.exists = true;
+    if (conv.kind === "dm" || conv.kind === "biz") conv.exists = true;
     clearReply();
     return true;
   } catch (err) {
@@ -424,6 +479,7 @@ $("#stickerTray").addEventListener("click", async e => {
 
 /* plus menu: poll (rooms), QR (private chats) */
 $("#plusBtn").addEventListener("click", () => {
+  if (conv.kind === "biz") { dialog(`<h3>${esc(conv.name)}</h3><button type="button" class="dl-opt" data-dact="stickers">😊 ${esc(t("stickers"))}</button>`); return; }
   if (conv.kind === "dm") { dialog(`<h3>${esc(conv.name)}</h3><button type="button" class="dl-opt" data-dact="stickers">😊 ${esc(t("stickers"))}</button><button type="button" class="dl-opt" data-dact="myqr">🔳 ${esc(t("myQR"))}</button>`); return; }
   dialog(`<h3>${esc(t("addToChat"))}</h3><button type="button" class="dl-opt" data-dact="poll">📊 ${esc(t("newPoll"))}</button><button type="button" class="dl-opt" data-dact="stickers">😊 ${esc(t("stickers"))}</button>`);
 });
@@ -460,7 +516,7 @@ async function castVote(msg, i) {
 }
 function openSheet(msg, name) {
   sheetMsg = { ...msg, name };
-  const mine = FB.user && msg.uid === FB.user.uid, isDM = conv.kind === "dm", canAct = FB.ready && FB.user && FB.profile;
+  const mine = FB.user && msg.uid === FB.user.uid, isDM = conv.kind === "dm" || conv.kind === "biz", canAct = FB.ready && FB.user && FB.profile;
   $("#sheetWho").textContent = mine ? t("yourMessage") : name;
   $("#reactRow").innerHTML = Object.entries(REACT).map(([k, e]) => `<button type="button" data-rk="${k}" class="${(msg.r || {})[FB.user && FB.user.uid] === k ? "on" : ""}" aria-label="${esc(t("react_" + k))}">${e}</button>`).join("");
   $("#reactRow").hidden = !FB.ready || !!msg.seed;   // reacting asks for an account
@@ -468,7 +524,7 @@ function openSheet(msg, name) {
   show("reply", canAct && !(conv.id === "official" && !FB.admin));
   show("dm", canAct && !isDM && !mine && conv.id !== "official" && !msg.seed);
   show("copy", !!msg.text);
-  show("report", !mine && FB.ready && !msg.seed);
+  show("report", !mine && FB.ready && !msg.seed && conv.kind !== "biz");
   show("block", !mine);
   show("delete", FB.ready && !msg.seed && (mine || (FB.admin && !isDM)));
   show("ban", FB.admin && !mine && !isDM && !msg.seed);
@@ -1191,7 +1247,7 @@ $("#claimBtn").addEventListener("click", () => toast(t("claimLocked")));
 /* ---------- start ---------- */
 applyStatic();
 readHash();
-feed = createFeed({ $, $$, t, esc, LANG, LOCALE, fmtD, hhmm, toast, store, go, FB, greeting, openArticle, openRoom, dialog, closeDialog,
+feed = createFeed({ $, $$, t, esc, LANG, LOCALE, fmtD, hhmm, toast, store, go, FB, greeting, openArticle, openRoom, openBiz, dialog, closeDialog,
   needAccount, current: () => current, gateOpen: () => !$("#gate").hidden });
 const startHash = location.hash;
 const start = startHash.replace("#", "");

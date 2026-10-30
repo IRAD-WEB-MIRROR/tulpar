@@ -26,6 +26,9 @@ en: {
   // conversation
   pinned: "Public room: be kind, and never share your address, phone number or passwords.",
   pinnedDM: "Private chat. Only the two of you can read it. Never send passwords or card numbers.",
+  bizChat: "Customer service", pinnedBiz: "Chat with the company's customer service team. Never send passwords or card numbers.",
+  bizClosed: "We're sorry, {n} online customer service is temporarily unavailable due to technical works. Please try again later or visit one of our offices. Thank you for your patience.",
+  bizHello: "Hello, and thank you for contacting {n}! 👋 Our customer service team answers messages Monday to Friday, 09:00–18:00 (Irad Time). Please describe your question and we will get back to you as soon as possible.",
   privateChat: "Private chat", message: "Message", stickers: "Stickers", stickerPreview: "Sticker",
   roomEmpty: "No messages yet. Say salam!", dmEmpty: "Say salam! Messages here are seen only by the two of you.",
   signInToPost: "Sign in to post.", signIn: "Sign in", nameToPost: "Choose a name to start posting.", setUpProfile: "Set up profile",
@@ -180,6 +183,9 @@ ir: {
 
   pinned: "Achık bölmö: sılık boluñuz, darekiñizdi, telefon nomeriñizdi je sırsözdörüñüzdü ech kachan bölüshpöñüz.",
   pinnedDM: "Jeke maek. Anı ekööñüz gana okuy alasız. Sırsözdördü je karta nomerlerin ech kachan jönötpöñüz.",
+  bizChat: "Kardarlardı teyleö", pinnedBiz: "Kompaniyanın kardarlardı teyleö bölümü menen maek. Sırsözdördü je karta nomerlerin ech kachan jönötpöñüz.",
+  bizClosed: "Kechiresiz, {n} onlayn kardarlardı teyleö kızmatı tehnikalık ishterge baylanıştuu ubaktıluu iştebey turat. Kiyinchereek kayra jazıñız je keñseleribizdin birine kelip kötüñüz. Sabırduuluguñuz üchün rahmat.",
+  bizHello: "Salamatsızbı, {n} kompaniyasına kayrılganıñız üchün rahmat! 👋 Kardarlardı teyleö bölümü düyshömbüdön jumaga cheyin, 09:00–18:00 (Irad ubaktısı) joop beret. Suroonuzdu jazıñız, biz mümkün bolushuncha tez joop berebiz.",
   privateChat: "Jeke maek", message: "Bildirüü", stickers: "Stikerler", stickerPreview: "Stiker",
   roomEmpty: "Azırınca bildirüülör jok. Salam deñiz!", dmEmpty: "Salam deñiz! Bul jerdegi bildirüülördü ekööñüz gana körösüz.",
   signInToPost: "Jazuu üchün kiriñiz.", signIn: "Kirüü", nameToPost: "Jaza bashtoo üchün at tandañız.", setUpProfile: "Profildi jöndöö",
@@ -331,6 +337,9 @@ ru: {
 
   pinned: "Публичная комната: будьте вежливы и никогда не сообщайте свой адрес, номер телефона или пароли.",
   pinnedDM: "Личный чат. Его можете читать только вы двое. Никогда не отправляйте пароли и номера карт.",
+  bizChat: "Служба поддержки", pinnedBiz: "Чат со службой поддержки компании. Никогда не отправляйте пароли и номера карт.",
+  bizClosed: "Приносим извинения: онлайн-поддержка {n} временно недоступна в связи с техническими работами. Попробуйте позже или обратитесь в одно из наших отделений. Спасибо за терпение.",
+  bizHello: "Здравствуйте! Спасибо, что обратились в {n} 👋 Служба поддержки отвечает с понедельника по пятницу, 09:00–18:00 (время Ирада). Опишите, пожалуйста, ваш вопрос, и мы ответим как можно скорее.",
   privateChat: "Личный чат", message: "Сообщение", stickers: "Стикеры", stickerPreview: "Стикер",
   roomEmpty: "Сообщений пока нет. Скажите салам!", dmEmpty: "Скажите салам! Сообщения здесь видите только вы двое.",
   signInToPost: "Войдите, чтобы писать.", signIn: "Войти", nameToPost: "Выберите имя, чтобы начать писать.", setUpProfile: "Настроить профиль",
