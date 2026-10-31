@@ -1002,6 +1002,26 @@
    "joined": "2022-07"
   },
   {
+   "handle": "iarmc",
+   "name": {
+    "en": "IARMC",
+    "ru": "ИАРМК"
+   },
+   "kind": "business",
+   "avatar": "feed/avatars/iarmc.svg",
+   "banner": "#0E2A47",
+   "cover": "https://iarmc.com/assets/img/hero.jpg",
+   "bio": {
+    "en": "Iradi Antimony and Rare Metals Combine: the Sary-Bulak Antimony Works and the Chatkal Chemical Smelting Complex. Press service. Antimony from Irad since 1961.",
+    "ir": "Irad surma jana seyrek metaldar kombinaty: Sary-Bulak jana Chatkal. 1961-jıldan beri.",
+    "ru": "Комбинат сурьмы и редких металлов Ирада: Сары-Булакский сурьмяный комбинат и Чаткальский химико-металлургический комплекс. Пресс-служба. С 1961 года."
+   },
+   "verified": true,
+   "followers": 5300,
+   "joined": "2021-11",
+   "url": "https://iarmc.com/"
+  },
+  {
    "handle": "iradloto",
    "name": {
     "en": "IradLoto",
