@@ -1,4 +1,4 @@
-/* Tulpar channels: in-world accounts (businesses, news, sport, institutions), their posts, the Discover timeline
+/* Tulpar channels: accounts (businesses, news, sport, institutions), their posts, the Discover timeline
    ("For you"), Channels (your subscriptions), channel profiles (#@handle) and single posts (#post=<id>).
    Posts come from feed/posts.json, then the day's posts at iradone.com/data/tulpar-feed.json, then the live IradOne,
    Herald and official Tulpar feeds. Likes, reposts, saves and subscriptions are kept per user (Firestore when
@@ -6,7 +6,7 @@
    "Subscribe to … on Tulpar?" sheet. Reading needs no account; subscribing, liking, reposting and saving ask the
    visitor to sign in first (the start-up screen), and a subscription asked for that way is made once they're in. */
 
-const DESK_FEED = "https://iradone.com/data/tulpar-feed.json";
+const DAY_FEED = "https://iradone.com/data/tulpar-feed.json";
 const IRADONE_INDEX = "https://iradone.com/news/index.json";
 const HERALD_RSS = "https://talasherald.com/feed.xml";
 const DEFAULT_SUBS = ["iradone", "talasherald", "tulpar"];
@@ -159,7 +159,7 @@ export function createFeed(ctx) {
   }
   function refresh() {
     const jobs = [
-      getJSON(DESK_FEED, 8000).then(j => { sources.desk = (j.posts || []).map(x => norm(x, "desk")).filter(Boolean); }).catch(() => {}),
+      getJSON(DAY_FEED, 8000).then(j => { sources.desk = (j.posts || []).map(x => norm(x, "desk")).filter(Boolean); }).catch(() => {}),
       getJSON(IRADONE_INDEX, 8000).then(items => {
         sources.iradone = (items || []).slice(0, 30).map(n => norm({ id: "live-io-" + n.slug, handle: "iradone", time: n.published, text: { en: n.ticker || n.headline },
           link: { url: "https://iradone.com/news/" + n.slug + ".html", site: "iradone.com", title: n.headline, desc: n.dek, image: n.image ? "https://iradone.com/" + n.image : null } }, "live")).filter(Boolean);

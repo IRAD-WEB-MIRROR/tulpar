@@ -1,4 +1,4 @@
-/* Channel pages (c/): written by the channel page generator; edit the generator, not this file. */
+/* Channel pages (c/) */
 .cv-banner { height: 150px; background: linear-gradient(120deg, var(--bn), #054a60); }
 .cv-card { position: relative; padding-top: 0; padding-bottom: 8px; max-width: 760px; }
 .cv-av { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #fff; box-shadow: 0 0 0 1px var(--rule); flex: none; color: #fff; font-weight: 700; }

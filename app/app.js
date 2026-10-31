@@ -301,10 +301,10 @@ function reopenConv() {
   }, err => { console.error(err); $("#msgs").innerHTML = `<p class="empty">${esc(t("loadFail"))}</p>`; });
 }
 
-/* room history: seed.js (October), then the day's chatter the desk writes each morning (iradone.com/data/tulpar-rooms.json),
+/* room history: seed.js (October), then the day's chatter, published each morning (iradone.com/data/tulpar-rooms.json),
    each line shown once its time has passed. Live messages mix in by time and a room keeps only its newest ROOM_KEEP,
    so older lines, real ones too, scroll off the top. */
-const DESK_ROOMS = "https://iradone.com/data/tulpar-rooms.json", ROOM_KEEP = 120;
+const DAY_ROOMS = "https://iradone.com/data/tulpar-rooms.json", ROOM_KEEP = 120;
 const seedCache = {};
 let deskRooms = {}, deskAt = 0, deskP = null;
 function lineMsg(m, id) {
@@ -323,7 +323,7 @@ function seedMsgs(room) {
 }
 function loadDeskRooms() {
   if (deskP || Date.now() - deskAt < 30 * 60e3) return deskP || Promise.resolve();
-  deskP = getJSON(DESK_ROOMS, 8000).then(j => {
+  deskP = getJSON(DAY_ROOMS, 8000).then(j => {
     const out = {};
     for (const room in (j && j.rooms) || {}) {
       const byId = {};
