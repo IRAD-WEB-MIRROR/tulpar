@@ -1182,6 +1182,48 @@
    "url": "https://arshakitep.com/"
   },
   {
+   "handle": "korkom",
+   "name": {
+    "en": "Körköm Foundation",
+    "ir": "Körköm Fondu",
+    "ru": "Фонд «Көркөм»"
+   },
+   "kind": "culture",
+   "avatar": "feed/avatars/korkom.svg",
+   "banner": "#111111",
+   "cover": "https://korkom.org/img/home-office.jpg",
+   "bio": {
+    "en": "The home of the art foundations of Irad: the Palace of Art, the Philharmonic, the Opera, Ak-Kuu and our other members. What is on this season.",
+    "ir": "Irad körköm fonddorunun üyü. Jañılıktar.",
+    "ru": "Фонд искусств «Көркөм»: Дворец искусств, филармония, опера, «Ак-Куу» и другие. Новости сезона."
+   },
+   "verified": true,
+   "followers": 4800,
+   "joined": "2021-09",
+   "url": "https://korkom.org/"
+  },
+  {
+   "handle": "kopuro",
+   "name": {
+    "en": "Köpürö",
+    "ir": "Köpürö",
+    "ru": "Кёпюрё"
+   },
+   "kind": "culture",
+   "avatar": "feed/avatars/kopuro.png",
+   "banner": "#1f6f8b",
+   "cover": "https://kopuro.org/og-image.png",
+   "bio": {
+    "en": "Resource centre for associations, Talas, since 2002. Grant notices, training, help with Form IA-21 and the Uuk-Boo bulletin.",
+    "ir": "Talastagı cemiyetter borboru, 2002-jıldan beri.",
+    "ru": "Ресурсный центр для общественных объединений, Талас, с 2002 года."
+   },
+   "verified": false,
+   "followers": 1200,
+   "joined": "2022-03",
+   "url": "https://kopuro.org/"
+  },
+  {
    "handle": "saintjanyl",
    "name": {
     "en": "Church of St. Janyl",
