@@ -42,7 +42,7 @@ window.TULPAR_STR = {
     naTitle: "Tirkeme jetkiliksiz", naBody: "Tulpar siz turgan ölködö je aymakta jetkiliksiz.", naOk: "Makul", naWeb: "Brauzerde achuu",
     readMore: "Tolugu menen", showLess: "Kıskartuu",
     cPhoneErr: "Mobildik nomeriñizdi ölkö kodusuz jazıñız.", cSending: "Jiberilip jatat…", cClaim: "100 TLPR aluu",
-    cSent: "{n} nomerine 6 sandan turgan kod jiberdik.", cCodeErr: "SMS'tegi 6 sandan turgan kodu jazıñız.", cChecking: "Tekshirilip jatat…", cClaimed: "Alındı",
+    cSent: "{n} nomerine 6 sandan turgan kod jiberdik.", cCodeErr: "SMS'tegi 6 sandan turgan kodu jazıñız.", cChecking: "Teksherilip jatat…", cClaimed: "Alındı",
     cDone: "Dayar. 100 TLPR Tulpar kapchıgıñızda. Körüü üchün tirkemeni achıñız.",
     bAmtErr: "Kancha tölögüñüz kelerin jazıñız.", bProcessing: "Ishtelip jatat…", bBuy: "TLPR satıp aluu", bCash: "Nakta kod aluu",
     bDeclined: "Tölömdü bankıñız kabıl albadı. Talasbank azırıncha Tulparcoin üchün karta tölömdörün kabıl albayt. IAEZden tıshkarı chıgarılgan kartanı koldonuñuz je Tulpar punktunda nakta tölöñüz.",
